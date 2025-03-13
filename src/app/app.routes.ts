@@ -1,16 +1,16 @@
 import { Routes } from '@angular/router';
-import { MestreComponent } from './paginas/Mestre/mestre.component';
-import { HomeComponent } from './paginas/Home/home.component';
-import { NotfoundComponent } from './paginas/Notfound/notfound.component';
-import { ContasOrcamentariasComponent } from './paginas/ModuloContasOrcamentarias/contas-orcamentarias/contas-orcamentarias.component';
-import { UsuariosComponent } from './paginas/ModuloUsuarios/usuarios/usuarios.component';
-import { NovousuarioComponent } from './paginas/ModuloUsuarios/novousuario/novousuario.component';
-import { NovacontaorcamentariaComponent } from './paginas/ModuloContasOrcamentarias/novacontaorcamentaria/novacontaorcamentaria.component';
-import { OrcamentosComponent } from './paginas/ModuloOrcamento/orcamentos/orcamentos.component';
-import { NovoorcamentoComponent } from './paginas/ModuloOrcamento/novoorcamento/novoorcamento.component';
-import { ItemListComponent } from './paginas/ModuloItensDoOrcamento/item-list/item-list.component';
-import { CentrodecustoComponent } from './paginas/ModuloCentroDeCusto/centrodecusto/centrodecusto.component';
-import { NovocentrodecustoComponent } from './paginas/ModuloCentroDeCusto/novocentrodecusto/novocentrodecusto.component';
+import { MestreComponent } from '@app/paginas/Mestre/mestre.component';
+import { HomeComponent } from '@app/paginas/Home/home.component';
+import { NotfoundComponent } from '@app/paginas/Notfound/notfound.component';
+import { ContasOrcamentariasComponent } from '@app/paginas/ModuloContasOrcamentarias/contas-orcamentarias/contas-orcamentarias.component';
+import { UsuariosComponent } from '@app/paginas/ModuloUsuarios/usuarios/usuarios.component';
+import { NovousuarioComponent } from '@app/paginas/ModuloUsuarios/novousuario/novousuario.component';
+import { NovacontaorcamentariaComponent } from '@app/paginas/ModuloContasOrcamentarias/novacontaorcamentaria/novacontaorcamentaria.component';
+import { OrcamentosComponent } from '@app/paginas/ModuloOrcamento/orcamentos/orcamentos.component';
+import { NovoorcamentoComponent } from '@app/paginas/ModuloOrcamento/novoorcamento/novoorcamento.component';
+import { ItemListComponent } from '@app/paginas/ModuloItensDoOrcamento/item-list/item-list.component';
+import { CentrodecustoComponent } from '@app/paginas/ModuloCentroDeCusto/centrodecusto/centrodecusto.component';
+import { NovocentrodecustoComponent } from '@app/paginas/ModuloCentroDeCusto/novocentrodecusto/novocentrodecusto.component';
 
 export const routes: Routes = [
   {
