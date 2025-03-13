@@ -1,0 +1,20 @@
+<div class="po-wrapper">
+  <po-toolbar
+    [p-profile]="profile"
+    [p-profile-actions]="profileActions"
+    [p-title]="title"
+  />
+  <po-menu [p-menus]="menus" [p-collapsed]="true" [p-automatic-toggle]="true">
+    <div
+      *p-menu-header-template
+      style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      "
+    ></div>
+  </po-menu>
+
+  <router-outlet></router-outlet>
+</div>

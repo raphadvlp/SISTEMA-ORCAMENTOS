@@ -1,0 +1,28 @@
+<po-page-default
+  p-title="Novo Orçamento"
+  [p-breadcrumb]="{
+    items: [
+      { label: 'Home', link: '/home' },
+      { label: 'Orçamentos', link: '/orcamentos' },
+      { label: 'Novo Orçamento', link: '/novoorcamento' }
+    ]
+  }"
+>
+  <po-divider p-border-width="small" p-label="Cabeçalho"> </po-divider>
+  <po-dynamic-form
+    #formOrcamentos
+    [p-fields]="fields"
+    [p-value]="formOrcamento"
+    (p-change)="onFormChange($event)"
+  ></po-dynamic-form>
+  <po-divider p-border-width="small" p-label="Itens"> </po-divider>
+  <app-item-list></app-item-list>
+
+  <div class="po-row">
+    <po-button
+      class="po-md-2"
+      p-label="Cadastrar"
+      (p-click)="confirmarForm(formOrcamentos.form.value)"
+    />
+  </div>
+</po-page-default>

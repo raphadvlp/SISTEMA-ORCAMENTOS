@@ -1,0 +1,26 @@
+<po-page-dynamic-table
+  #pageCentroDeCusto
+  [p-service-api]="url"
+  [p-fields]="fields"
+  [p-table-custom-actions]="tableActions"
+  [p-actions]="actions"
+  class="teste"
+/>
+
+<!-- Modal de detalhes -->
+<po-modal #centroDeCustoDetailModal [p-title]="descricao">
+  <po-dynamic-view
+    [p-fields]="centroDeCustoFields"
+    [p-value]="centroDeCustoData"
+  />
+</po-modal>
+
+<!-- Modal de edição -->
+<po-modal #editModal p-title="Editar Centro de Custo">
+  <po-dynamic-form
+    [p-fields]="editFields"
+    [p-value]="editData"
+    (p-submit)="saveEdit()"
+  ></po-dynamic-form>
+  <po-button p-label="Salvar" (p-click)="saveEdit()"></po-button>
+</po-modal>

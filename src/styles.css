@@ -1,0 +1,65 @@
+:root {
+  --color-toolbar-background-color-toolbar: #fbfbfb;
+}
+
+po-menu {
+  white-space: nowrap;
+}
+
+po-page-content {
+  --padding-content: 0px 20px 0px 0px !important;
+}
+
+/* html,
+body {
+  --spacing-md: 0.2rem !important;
+  --spacing-xs: 0.2rem !important;
+} */
+
+/* .po-page-list-actions {
+  position: absolute;
+} */
+
+.po-table-main-container {
+  font-size: 5px;
+}
+
+.po-table-actions {
+  padding-block: 0px !important;
+}
+.po-page {
+  gap: 0px !important;
+}
+
+/* thead {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 2;
+} */
+
+po-table .po-table-group-row {
+  --font-size-default: 14px;
+}
+
+po-table .po-table-group-row:nth-child(odd) {
+  --background-color: #d9c2e548;
+}
+
+po-table .po-table-group-row:nth-child(even):hover,
+po-table .po-table-group-row:nth-child(odd):hover {
+  --background-color: #d9c2e5;
+}
+
+.po-table[p-spacing="medium"] tbody tr td:not(.po-table-column-detail) {
+  padding-block: 0.1rem;
+}
+
+.po-table thead tr th {
+  font-size: 0.9rem;
+}
+
+.bloqued-row {
+  background-color: #ffcccc; /* Cor de fundo para linhas bloqueadas */
+  color: #ff0000; /* Cor do texto para linhas bloqueadas */
+}

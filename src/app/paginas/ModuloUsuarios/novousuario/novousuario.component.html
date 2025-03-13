@@ -1,0 +1,18 @@
+<po-page-default
+  p-title="Novo Usuário"
+  [p-breadcrumb]="{
+    items: [
+      { label: 'Usuários', link: '/usuarios' },
+      { label: 'Novo Usuários' }
+    ]
+  }"
+>
+  <po-dynamic-form #formNovoUsuario [p-fields]="fields"></po-dynamic-form>
+  <div class="po-row">
+    <po-button
+      class="po-md-3"
+      p-label="Confirmar"
+      (p-click)="confirmarForm(formNovoUsuario.form.value)"
+    />
+  </div>
+</po-page-default>

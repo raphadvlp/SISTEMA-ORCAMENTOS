@@ -1,0 +1,6 @@
+<po-dynamic-form
+  [p-fields]="fields"
+  [p-value]="formValues"
+  (p-change)="onFormChange($event)"
+></po-dynamic-form>
+<po-button p-label="Adicionar" (p-click)="adicionarOuSalvarItem()"></po-button>

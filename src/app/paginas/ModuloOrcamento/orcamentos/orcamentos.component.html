@@ -1,0 +1,63 @@
+<po-page-dynamic-table
+  #pageOrcamentos
+  [p-service-api]="url"
+  [p-fields]="fields"
+  [p-table-custom-actions]="tableActions"
+  [p-actions]="actions"
+  class="teste"
+/>
+
+<!-- Modal de detalhes -->
+<po-modal #userDetailModal [p-title]="descricao_orcamento">
+  <po-dynamic-view [p-fields]="orcamentoFields" [p-value]="orcamentoData" />
+  <po-divider p-label="Itens do Orçamento"></po-divider>
+  <po-table
+    *ngIf="orcamentoData.itens && orcamentoData.itens.length > 0"
+    [p-columns]="itemColumns"
+    [p-items]="orcamentoData.itens"
+  ></po-table>
+  <p *ngIf="!orcamentoData.itens || orcamentoData.itens.length === 0">
+    Nenhum item encontrado.
+  </p>
+</po-modal>
+
+<!-- Modal de edição -->
+<po-modal #editModal p-title="Editar Orçamento">
+  <po-dynamic-form
+    [p-fields]="editFields"
+    [p-value]="editData"
+    (p-submit)="saveEdit()"
+  ></po-dynamic-form>
+  <po-divider p-label="Itens do Orçamento"></po-divider>
+  <po-table
+    *ngIf="editData.itens && editData.itens.length > 0"
+    [p-columns]="itemColumns"
+    [p-items]="editData.itens"
+  ></po-table>
+  <p *ngIf="!editData.itens || editData.itens.length === 0">
+    Nenhum item encontrado.
+  </p>
+  <!-- Botão para adicionar novo item -->
+  <po-button
+    p-label="Adicionar Item"
+    (p-click)="openAddItemModal()"
+  ></po-button>
+  <po-button p-label="Salvar" (p-click)="saveEdit()"></po-button>
+</po-modal>
+
+<!-- Modal de edição de item -->
+<po-modal #editItemModal p-title="Editar Item">
+  <po-dynamic-form
+    [p-fields]="itemFields"
+    [p-value]="itemEditData"
+    (p-submit)="saveItemEdit()"
+  ></po-dynamic-form>
+  <po-button p-label="Salvar" (p-click)="saveItemEdit()"></po-button>
+</po-modal>
+
+<!-- Modal para adicionar novo item -->
+<po-modal #addItemModal p-title="Adicionar Item">
+  <app-adicionaritenorcamento
+    (itemAdicionado)="adicionarItem($event)"
+  ></app-adicionaritenorcamento>
+</po-modal>

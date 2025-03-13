@@ -1,0 +1,33 @@
+<!-- <po-page-default> -->
+<po-page-dynamic-table
+  #pageContasOrcamentarias
+  [p-draggable]="false"
+  [p-service-api]="url"
+  [p-fields]="fields"
+  [p-table-custom-actions]="tableActions"
+  [p-actions]="actions"
+  class="teste"
+></po-page-dynamic-table>
+
+<po-modal
+  #userDetailModal
+  p-title="Detalhes da Conta Orçamentária"
+  [p-primary-action]="{ action: closeDetailModal.bind(this), label: 'Fechar' }"
+>
+  <po-dynamic-view
+    [p-fields]="userFields"
+    [p-value]="contaOrcamentariaData"
+  ></po-dynamic-view>
+</po-modal>
+
+<po-modal
+  #userEditModal
+  p-title="Editar Conta Orçamentária"
+  [p-primary-action]="primaryAction"
+  [p-secondary-action]="secondaryAction"
+>
+  <po-dynamic-form
+    [p-fields]="userFormFields"
+    [p-value]="contaOrcamentariaData"
+  ></po-dynamic-form>
+</po-modal>

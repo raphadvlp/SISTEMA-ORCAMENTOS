@@ -1,0 +1,29 @@
+<po-page-dynamic-table
+  #pageUsers
+  [p-draggable]="false"
+  [p-service-api]="url"
+  [p-fields]="fields"
+  [p-table-custom-actions]="tableActions"
+  [p-actions]="actions"
+  class="teste"
+></po-page-dynamic-table>
+
+<po-modal
+  #userDetailModal
+  p-title="Detalhes do Usuário"
+  [p-primary-action]="actionCloseDetail"
+>
+  <po-dynamic-view [p-value]="userData"></po-dynamic-view>
+</po-modal>
+
+<po-modal
+  #userEditModal
+  p-title="Editar Usuário"
+  [p-primary-action]="primaryAction"
+  [p-secondary-action]="secondaryAction"
+>
+  <po-dynamic-form
+    [p-fields]="userFormFields"
+    [p-value]="userData"
+  ></po-dynamic-form>
+</po-modal>

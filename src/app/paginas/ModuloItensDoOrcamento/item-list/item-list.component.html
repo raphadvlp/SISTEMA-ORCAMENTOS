@@ -1,0 +1,28 @@
+<!-- Formulário dinâmico -->
+<po-dynamic-form
+  [p-fields]="fields"
+  [p-value]="formValues"
+  (p-change)="onFormChange($event)"
+></po-dynamic-form>
+
+<!-- Botão Adicionar/Salvar -->
+<div class="po-row">
+  <po-button
+    class="po-md-2"
+    [p-label]="editingIndex !== null ? 'Salvar' : 'Adicionar'"
+    (click)="adicionarOuSalvarItem()"
+  ></po-button>
+</div>
+
+<!-- Tabela -->
+<po-table
+  [p-columns]="columns"
+  [p-items]="items"
+  [p-actions]="actions"
+></po-table>
+
+<!-- Botão Salvar -->
+<!-- <po-button p-label="Salvar" (click)="salvarOrcamento()"></po-button> -->
+
+<!-- Exibição do JSON salvo -->
+<!-- <pre *ngIf="orcamentoSalvo">{{ orcamentoSalvo | json }}</pre> -->

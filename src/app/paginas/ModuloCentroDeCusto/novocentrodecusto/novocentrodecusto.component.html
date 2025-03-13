@@ -1,0 +1,13 @@
+<po-page-default p-title="Novo Centro de Custo">
+  <po-dynamic-form
+    [p-fields]="fields"
+    [p-value]="formOrcamento"
+  ></po-dynamic-form>
+  <div class="po-row">
+    <po-button
+      class="po-md-3"
+      p-label="Cadastrar"
+      (p-click)="confirmarForm(formOrcamento)"
+    ></po-button>
+  </div>
+</po-page-default>

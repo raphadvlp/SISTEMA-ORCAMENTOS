@@ -1,0 +1,23 @@
+<po-page-default
+  p-title="Nova Conta Orçamentária"
+  [p-breadcrumb]="{
+    items: [
+      { label: 'Home', link: '/home' },
+      { label: 'Contas Orçamentárias', link: '/contas-orcamentarias' },
+      { label: 'Nova Conta Orçamentária', link: '/novacontaorcamentaria' }
+    ]
+  }"
+>
+  <po-dynamic-form
+    #formOrcamento
+    [p-fields]="fields"
+    (p-change)="onFormChange($event)"
+  ></po-dynamic-form>
+  <div class="po-row">
+    <po-button
+      class="po-md-3"
+      p-label="Cadastrar"
+      (p-click)="confirmarForm(formOrcamento.form.value)"
+    />
+  </div>
+</po-page-default>
