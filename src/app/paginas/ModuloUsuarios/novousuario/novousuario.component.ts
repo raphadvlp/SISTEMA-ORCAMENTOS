@@ -60,7 +60,7 @@ export class NovousuarioComponent {
         { label: 'Contabilidade', value: 'Contabilidade' },
         { label: 'Fiscal', value: 'Fiscal' },
         { label: 'Comercial', value: 'Comercial' },
-        { label: 'Marketing', value: 'marketing' },
+        { label: 'Marketing', value: 'Marketing' },
         { label: 'Operacional', value: 'Operacional' },
         { label: 'Controladoria', value: 'Controladoria' },
         { label: 'Loistica', value: 'Logistica' },

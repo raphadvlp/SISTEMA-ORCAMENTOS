@@ -60,9 +60,13 @@ export class ItemListComponent implements OnInit {
       required: true,
       gridColumns: 2,
       searchService: this.lookupServiceContaOrcamentaria,
-      fieldLabel: 'codigo_contaorcamentaria', // Nome da propriedade que será exibida no lookup
-      fieldValue: 'codigo_contaorcamentaria', // Nome da propriedade que será usada como valor
-      placeholder: 'Código Conta Orçamentária',
+      fieldLabel: 'nome_contaorcamentaria', // Exibe apenas o código
+      fieldValue: 'codigo_contaorcamentaria', // Valor retornado ao selecionar
+      columns: [ // Colunas exibidas no lookup
+        { property: 'codigo_contaorcamentaria', label: 'Código' },
+        { property: 'nome_contaorcamentaria', label: 'Nome' },
+      ],
+      placeholder: 'Selecione uma conta',
       noAutocomplete: true,
     },
     {
@@ -74,6 +78,10 @@ export class ItemListComponent implements OnInit {
       searchService: this.lookupServiceCentroDeCusto,
       fieldLabel: 'codigo', // Nome da propriedade que será exibida no lookup
       fieldValue: 'codigo', // Nome da propriedade que será usada como valor
+      columns: [ // Colunas exibidas no lookup
+        { property: 'codigo', label: 'Código' },
+        { property: 'descricao', label: 'Nome' },
+      ],
       placeholder: 'Código CC',
       noAutocomplete: true,
     },
