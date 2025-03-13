@@ -6,9 +6,7 @@ import { ContasOrcamentariasComponent } from './paginas/ModuloContasOrcamentaria
 import { UsuariosComponent } from './paginas/ModuloUsuarios/usuarios/usuarios.component';
 import { NovousuarioComponent } from './paginas/ModuloUsuarios/novousuario/novousuario.component';
 import { NovacontaorcamentariaComponent } from './paginas/ModuloContasOrcamentarias/novacontaorcamentaria/novacontaorcamentaria.component';
-// import { EditarusuarioComponent } from './paginas/editarusuario/editarusuario.component';
 import { OrcamentosComponent } from './paginas/ModuloOrcamento/orcamentos/orcamentos.component';
-// import { EditarorcamentoComponent } from './paginas/editarorcamento/editarorcamento.component';
 import { NovoorcamentoComponent } from './paginas/ModuloOrcamento/novoorcamento/novoorcamento.component';
 import { ItemListComponent } from './paginas/ModuloItensDoOrcamento/item-list/item-list.component';
 import { CentrodecustoComponent } from './paginas/ModuloCentroDeCusto/centrodecusto/centrodecusto.component';
@@ -27,10 +25,8 @@ export const routes: Routes = [
         path: 'novacontaorcamentaria',
         component: NovacontaorcamentariaComponent,
       },
-      // { path: 'editarusuario/:id', component: EditarusuarioComponent },
       { path: 'orcamentos', component: OrcamentosComponent },
       { path: 'novoorcamento', component: NovoorcamentoComponent },
-      // { path: 'editarorcamento', component: EditarorcamentoComponent },
       { path: 'item-list', component: ItemListComponent },
       { path: 'centrodecusto', component: CentrodecustoComponent },
       { path: 'novocentrodecusto', component: NovocentrodecustoComponent },
