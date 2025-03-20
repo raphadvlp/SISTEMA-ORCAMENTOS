@@ -2,6 +2,11 @@
   --color-toolbar-background-color-toolbar: #032340;
 }
 
+.po-page-login-panel {
+  padding-bottom: 0px;
+  padding-top: 0px;
+}
+
 po-menu {
   white-space: nowrap;
   --background-color: #032340;
