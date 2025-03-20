@@ -1,0 +1,18 @@
+<po-page-login
+    #loginPage
+    (p-login-submit) = "confirmLogin(loginPage)"
+    [p-product-name] = "titleSystem"
+
+>
+
+    <po-loading-overlay 
+        [hidden]="isHiddenLoading"
+        [p-text] = "textLoading"
+    />
+
+</po-page-login>
+
+<!-- 
+    [p-logo]="logoLogin"
+    [p-background]="backgroundLogin"
+-->

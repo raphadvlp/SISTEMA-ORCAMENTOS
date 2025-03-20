@@ -11,8 +11,11 @@ import { NovoorcamentoComponent } from '@app/paginas/ModuloOrcamento/novoorcamen
 import { ItemListComponent } from '@app/paginas/ModuloItensDoOrcamento/item-list/item-list.component';
 import { CentrodecustoComponent } from '@app/paginas/ModuloCentroDeCusto/centrodecusto/centrodecusto.component';
 import { NovocentrodecustoComponent } from '@app/paginas/ModuloCentroDeCusto/novocentrodecusto/novocentrodecusto.component';
+import { LoginComponent } from './paginas/ModuloLogin/login/login.component';
+import { authGuard } from './auth.guard';
 
 export const routes: Routes = [
+  {path: 'login', component: LoginComponent},
   {
     path: '',
     component: MestreComponent,
@@ -31,6 +34,7 @@ export const routes: Routes = [
       { path: 'centrodecusto', component: CentrodecustoComponent },
       { path: 'novocentrodecusto', component: NovocentrodecustoComponent },
     ],
+    canActivate: [authGuard],
   },
   { path: '**', component: NotfoundComponent },
 ];
