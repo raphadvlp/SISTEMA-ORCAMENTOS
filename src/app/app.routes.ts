@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { MestreComponent } from '@app/paginas/Mestre/mestre.component';
-import { HomeComponent } from '@app/paginas/Home/home.component';
-import { NotfoundComponent } from '@app/paginas/Notfound/notfound.component';
+import { MestreComponent } from '@app/paginas/mestre/mestre.component';
+import { HomeComponent } from '@app/paginas/home/home.component';
+import { NotfoundComponent } from '@app/paginas/notfound/notfound.component';
 import { ContasOrcamentariasComponent } from '@app/paginas/ModuloContasOrcamentarias/contas-orcamentarias/contas-orcamentarias.component';
 import { UsuariosComponent } from '@app/paginas/ModuloUsuarios/usuarios/usuarios.component';
 import { NovousuarioComponent } from '@app/paginas/ModuloUsuarios/novousuario/novousuario.component';
