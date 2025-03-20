@@ -4,7 +4,7 @@ import { loginData } from '@app/class/loginData';
 import { LoginService } from '@app/services/login.service';
 import { ConfigService } from '@app/services/transformConfig.service';
 import { PoLanguage, PoLoadingModule, PoNotificationService } from '@po-ui/ng-components';
-import { PoPageLoginComponent, PoPageLoginModule } from '@po-ui/ng-templates';
+import { PoPageLoginComponent, PoPageLoginCustomField, PoPageLoginLiterals, PoPageLoginModule } from '@po-ui/ng-templates';
 
 @Component({
   selector: 'app-login',
@@ -30,6 +30,12 @@ export class LoginComponent {
   ) {
       ConfigService.setConfig('login', 'id');
     }
+
+  public customLiterals: PoPageLoginLiterals = {
+      loginPlaceholder: 'Insira seu usuário de acesso',
+      passwordPlaceholder: 'Insira sua senha de acesso',
+      submitLabel: 'Acessar sistema'
+  };
     
 
   public confirmLogin(loginPage: PoPageLoginComponent) {
