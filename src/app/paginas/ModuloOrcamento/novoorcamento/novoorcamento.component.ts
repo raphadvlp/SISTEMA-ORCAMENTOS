@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, ViewChild, OnInit } from '@angular/core';
+import { Component, inject, ViewChild, OnInit, Input, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   PoNotificationService,
@@ -26,7 +26,7 @@ export class NovoorcamentoComponent implements OnInit {
   // Referência ao componente ItemListComponent
   @ViewChild(ItemListComponent) itemListComponent!: ItemListComponent;
 
-  public fields: PoDynamicFormField[] = [
+  @Input() fields: PoDynamicFormField[] = [
     {
       property: 'codigo_orcamento',
       label: 'Código',
@@ -52,6 +52,7 @@ export class NovoorcamentoComponent implements OnInit {
       property: 'periodo',
       label: 'Período',
       placeholder: 'Mensal ou Anual',
+      type: 'string',
       options: [
         { label: 'Mensal', value: 'Mensal' },
         { label: 'Anual', value: 'Anual' },
@@ -114,19 +115,50 @@ export class NovoorcamentoComponent implements OnInit {
     // Inicializa o campo numero_versao com 1
     this.formOrcamento.numero_versao = this.versaoSequence;
 
+    // Define um valor inicial para o campo 'periodo'
+    this.formOrcamento.periodo = 'Mensal'; // Ou 'Anual', dependendo do caso
+
+    // Define um valor inicial para o campo 'bloqueado'
+    this.formOrcamento.bloqueado = 'Nao'; // Ou 'Anual', dependendo do caso
+
     // Verifica o valor inicial do campo periodo
     this.onPeriodoChange(this.formOrcamento.periodo);
   }
 
-  // Método para lidar com a mudança do valor do campo periodo
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['fields']) {
+      console.log('Fields alterados:', changes['fields'].currentValue);
+    }
+  }
+
+  ngDoCheck() {
+    // Verifica se o valor do campo 'periodo' mudou
+    const periodo = this.formOrcamento.periodo;
+  
+    if (periodo) {
+      // Chama o método onPeriodoChange para atualizar o estado do campo 'dt_inicio'
+      this.onPeriodoChange(periodo);
+    }
+  }
+
+
   onPeriodoChange(periodo: string) {
-    const dtInicioField = this.fields.find(
-      (field) => field.property === 'dt_inicio'
-    );
+    console.log('Período alterado para:', periodo);
+  
+    // Encontra o campo 'dt_inicio'
+    const dtInicioField = this.fields.find((field) => field.property === 'dt_inicio');
+  
     if (dtInicioField) {
+      // Define o campo como desabilitado se o período for 'Anual', caso contrário, habilita
       dtInicioField.disabled = periodo === 'Anual';
     }
-    // Força a atualização do formulário
+
+    // Se o período for 'Anual', limpa o valor do campo 'dt_inicio'
+    if (periodo === 'Anual') {
+      this.formOrcamento.dt_inicio = null; // ou '' dependendo do que você preferir
+    }
+  
+    // Atualiza o array de campos para forçar a detecção de mudanças
     this.fields = [...this.fields];
   }
 
@@ -135,6 +167,25 @@ export class NovoorcamentoComponent implements OnInit {
     if (event.property === 'periodo') {
       this.onPeriodoChange(event.value);
     }
+
+    //Não está funcionando
+    if (event.property === 'codigo_orcamento') {
+      this.onCodigoChange(event.value);
+    }
+  }
+
+  onCodigoChange(codigo: string) {
+    console.log('Código alterado para:', codigo);
+  
+    // Atualiza o campo 'código_orcamento' no item da lista
+    if (this.itemListComponent && this.itemListComponent.items.length > 0) {
+      this.itemListComponent.items.forEach((item) => {
+        item.codigo_orcamento = codigo;
+      });
+    }
+  
+    // Log para depuração
+    console.log('Itens atualizados:', this.itemListComponent.items);
   }
 
   public confirmarForm(form: any) {
