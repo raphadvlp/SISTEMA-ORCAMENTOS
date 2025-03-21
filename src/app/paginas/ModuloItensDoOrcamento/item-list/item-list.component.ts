@@ -61,7 +61,7 @@ export class ItemListComponent implements OnInit {
       gridColumns: 2,
       searchService: this.lookupServiceContaOrcamentaria,
       fieldLabel: 'nome_contaorcamentaria', // Exibe apenas o código
-      fieldValue: 'codigo_contaorcamentaria', // Valor retornado ao selecionar
+      fieldValue: 'nome_contaorcamentaria', // Valor retornado ao selecionar
       columns: [ // Colunas exibidas no lookup
         { property: 'codigo_contaorcamentaria', label: 'Código' },
         { property: 'nome_contaorcamentaria', label: 'Nome' },
