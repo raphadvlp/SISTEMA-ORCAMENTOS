@@ -134,7 +134,7 @@ export class NovoorcamentoComponent implements OnInit {
       selectedDate.getFullYear() === today.getFullYear()
     );
 }
-  
+
   validateBothDatesForMonthlyPeriod(): boolean {
     if (this.periodoAtual !== 'Mensal') return true;
     
@@ -369,8 +369,7 @@ export class NovoorcamentoComponent implements OnInit {
         return;
       }
     }
-  
-    // Restante da validação...
+
     if (this.itemListComponent.items.length === 0) {
       this.notify.warning({
         duration: 2000,
