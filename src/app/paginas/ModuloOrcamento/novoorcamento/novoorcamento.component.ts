@@ -253,22 +253,22 @@ export class NovoorcamentoComponent implements OnInit {
       this.onPeriodoChange(event.value);
     }
 
-     //Não está funcionando
-    if (this.periodoAtual === 'Mensal') {
-      if (event.property === 'dt_inicio' && !this.validateCurrentMonth(event.value)) {
-        this.notify.warning({
-          duration: 2000,
-          message: 'Data início deve ser do mês atual!'
-        });
-      }
+    //  //Não está funcionando
+    // if (this.periodoAtual === 'Mensal') {
+    //   if (event.property === 'dt_inicio' && !this.validateCurrentMonth(event.value)) {
+    //     this.notify.warning({
+    //       duration: 2000,
+    //       message: 'Data início deve ser do mês atual!'
+    //     });
+    //   }
       
-      if (event.property === 'dt_fim' && !this.validateCurrentMonth(event.value)) {
-        this.notify.warning({
-          duration: 2000,
-          message: 'Data final deve ser do mês atual!'
-        });
-      }
-    }
+    //   if (event.property === 'dt_fim' && !this.validateCurrentMonth(event.value)) {
+    //     this.notify.warning({
+    //       duration: 2000,
+    //       message: 'Data final deve ser do mês atual!'
+    //     });
+    //   }
+    // }
     
     if (event.property === 'codigo_orcamento') {
       this.onCodigoChange(event.value);
@@ -289,17 +289,17 @@ export class NovoorcamentoComponent implements OnInit {
     console.log('Itens atualizados:', this.itemListComponent.items);
   }
 
-    // Método para obter a data mínima (primeiro dia do mês atual)
-  getMinDateForPeriod(): Date {
-    const today = new Date();
-    return new Date(today.getFullYear(), today.getMonth(), 1);
-  }
+  //   // Método para obter a data mínima (primeiro dia do mês atual)
+  // getMinDateForPeriod(): Date {
+  //   const today = new Date();
+  //   return new Date(today.getFullYear(), today.getMonth(), 1);
+  // }
 
-  // Método para obter a data máxima (último dia do mês atual)
-  getMaxDateForPeriod(): Date {
-    const today = new Date();
-    return new Date(today.getFullYear(), today.getMonth() + 1, 0);
-  }
+  // // Método para obter a data máxima (último dia do mês atual)
+  // getMaxDateForPeriod(): Date {
+  //   const today = new Date();
+  //   return new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  // }
 
   public confirmarForm(form: any) {
     // Validação para período mensal
@@ -311,29 +311,29 @@ export class NovoorcamentoComponent implements OnInit {
       const startDate = new Date(form.dt_inicio);
       const endDate = form.dt_fim ? new Date(form.dt_fim) : null;
   
-      if (!this.validateCurrentMonth(form.dt_inicio)) {
-        this.notify.error({
-          duration: 3000,
-          message: `A data inicial deve ser do mês atual (${this.currentMonthName}/${this.currentYear})`
-        });
-        return;
-      }
+      // if (!this.validateCurrentMonth(form.dt_inicio)) {
+      //   this.notify.error({
+      //     duration: 3000,
+      //     message: `A data inicial deve ser do mês atual (${this.currentMonthName}/${this.currentYear})`
+      //   });
+      //   return;
+      // }
   
-      if (endDate && !this.validateCurrentMonth(form.dt_fim)) {
-        this.notify.error({
-          duration: 3000,
-          message: `A data final deve ser do mês atual (${this.currentMonthName}/${this.currentYear})`
-        });
-        return;
-      }
+      // if (endDate && !this.validateCurrentMonth(form.dt_fim)) {
+      //   this.notify.error({
+      //     duration: 3000,
+      //     message: `A data final deve ser do mês atual (${this.currentMonthName}/${this.currentYear})`
+      //   });
+      //   return;
+      // }
   
-      if (endDate && startDate > endDate) {
-        this.notify.error({
-          duration: 3000,
-          message: 'A data final não pode ser anterior à data inicial'
-        });
-        return;
-      }
+      // if (endDate && startDate > endDate) {
+      //   this.notify.error({
+      //     duration: 3000,
+      //     message: 'A data final não pode ser anterior à data inicial'
+      //   });
+      //   return;
+      // }
     }
     
     // Validação para período anual
@@ -344,29 +344,29 @@ export class NovoorcamentoComponent implements OnInit {
       const startDate = new Date(form.dt_inicio);
       const endDate = form.dt_fim ? new Date(form.dt_fim) : null;
   
-      if (startDate.getFullYear() !== currentYear) {
-        this.notify.error({
-          duration: 3000,
-          message: `A data inicial deve ser do ano atual (${currentYear})`
-        });
-        return;
-      }
+      // if (startDate.getFullYear() !== currentYear) {
+      //   this.notify.error({
+      //     duration: 3000,
+      //     message: `A data inicial deve ser do ano atual (${currentYear})`
+      //   });
+      //   return;
+      // }
   
-      if (endDate && endDate.getFullYear() !== currentYear) {
-        this.notify.error({
-          duration: 3000,
-          message: `A data final deve ser do ano atual (${currentYear})`
-        });
-        return;
-      }
+      // if (endDate && endDate.getFullYear() !== currentYear) {
+      //   this.notify.error({
+      //     duration: 3000,
+      //     message: `A data final deve ser do ano atual (${currentYear})`
+      //   });
+      //   return;
+      // }
   
-      if (endDate && startDate > endDate) {
-        this.notify.error({
-          duration: 3000,
-          message: 'A data final não pode ser anterior à data inicial'
-        });
-        return;
-      }
+      // if (endDate && startDate > endDate) {
+      //   this.notify.error({
+      //     duration: 3000,
+      //     message: 'A data final não pode ser anterior à data inicial'
+      //   });
+      //   return;
+      // }
     }
 
     if (this.itemListComponent.items.length === 0) {
