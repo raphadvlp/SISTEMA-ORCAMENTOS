@@ -22,6 +22,10 @@ export class NovoorcamentoComponent implements OnInit {
   private route = inject(Router);
   private url: string = environment.url;
   private notify = inject(PoNotificationService);
+  
+  currentMonthName = new Date().toLocaleDateString('pt-BR', { month: 'long' });
+  lastDayOfMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate().toString().padStart(2, '0');
+  currentYear = new Date().getFullYear();
 
   // Referência ao componente ItemListComponent
   @ViewChild(ItemListComponent) itemListComponent!: ItemListComponent;
@@ -64,19 +68,21 @@ export class NovoorcamentoComponent implements OnInit {
       property: 'dt_inicio',
       label: 'Data Início',
       type: 'date',
-      format: 'mm/dd/yyyy',
-      gridColumns: 2,
+      format: 'dd/mm/yyyy',
+      gridColumns: 3,
       placeholder: '00/00/0000',
       noAutocomplete: true,
+      errorMessage: 'Selecione uma data do mês atual' // Mensagem padrão de erro
     },
     {
       property: 'dt_fim',
       label: 'Data Final',
       type: 'date',
-      format: 'mm/dd/yyyy',
-      gridColumns: 2,
+      format: 'dd/mm/yyyy',
+      gridColumns: 3,
       placeholder: '00/00/0000',
       noAutocomplete: true,
+      errorMessage: 'Selecione uma data do mês atual' // Mensagem padrão de erro
     },
     {
       property: 'numero_versao',
@@ -84,7 +90,7 @@ export class NovoorcamentoComponent implements OnInit {
       type: 'number',
       placeholder: 'Digite a versão',
       required: true,
-      gridColumns: 2,
+      gridColumns: 1,
       clean: true,
       disabled: true, // Desabilita o campo
       noAutocomplete: true,
@@ -99,7 +105,7 @@ export class NovoorcamentoComponent implements OnInit {
         { label: 'Sim', value: 'sim' },
       ],
       forceOptionsComponentType: ForceOptionComponentEnum.select,
-      gridColumns: 4,
+      gridColumns: 3,
     },
   ];
 
@@ -111,17 +117,51 @@ export class NovoorcamentoComponent implements OnInit {
 
   public isEditing: boolean = false; // Adiciona a propriedade isEditing
 
+  validateCurrentMonth(date: string | Date): boolean {
+    if (!date) return false;
+    
+    const selectedDate = new Date(date);
+    const today = new Date();
+    
+    // Se o período for anual, validar apenas mês e ano
+    if (this.periodoAtual === 'Anual') {
+      return selectedDate.getFullYear() === today.getFullYear();
+    }
+    
+    // Para período mensal, validar mês, ano e dia
+    return (
+      selectedDate.getMonth() === today.getMonth() && 
+      selectedDate.getFullYear() === today.getFullYear()
+    );
+}
+  
+  validateBothDatesForMonthlyPeriod(): boolean {
+    if (this.periodoAtual !== 'Mensal') return true;
+    
+    const validStart = this.validateCurrentMonth(this.formOrcamento.dt_inicio);
+    const validEnd = this.validateCurrentMonth(this.formOrcamento.dt_fim);
+    
+    return validStart && validEnd;
+  }
+
   ngOnInit() {
     // Inicializa o campo numero_versao com 1
     this.formOrcamento.numero_versao = this.versaoSequence;
 
     // Define um valor inicial para o campo 'periodo'
-    this.formOrcamento.periodo = 'Mensal'; // Ou 'Anual', dependendo do caso
+    this.formOrcamento.periodo = 'Mensal';
 
     // Define um valor inicial para o campo 'bloqueado'
-    this.formOrcamento.bloqueado = 'Nao'; // Ou 'Anual', dependendo do caso
-
-    // Verifica o valor inicial do campo periodo
+    this.formOrcamento.bloqueado = 'Nao';
+    
+    // Formata a data inicial corretamente para o PO UI
+    const today = new Date();
+    const formattedDate = `${today.getDate().toString().padStart(2, '0')}/` +
+                         `${(today.getMonth() + 1).toString().padStart(2, '0')}/` +
+                         `${today.getFullYear()}`;
+    
+    this.formOrcamento.dt_inicio = formattedDate;
+    
     this.onPeriodoChange(this.formOrcamento.periodo);
   }
 
@@ -141,25 +181,71 @@ export class NovoorcamentoComponent implements OnInit {
     }
   }
 
+   // Controle do período
+   public periodoAtual: string = 'Mensal';
 
-  onPeriodoChange(periodo: string) {
+
+   onPeriodoChange(periodo: string) {
     console.log('Período alterado para:', periodo);
+    this.periodoAtual = periodo;
   
-    // Encontra o campo 'dt_inicio'
-    const dtInicioField = this.fields.find((field) => field.property === 'dt_inicio');
+    const dtInicioField = this.fields.find(f => f.property === 'dt_inicio');
+    const dtFimField = this.fields.find(f => f.property === 'dt_fim');
   
-    if (dtInicioField) {
-      // Define o campo como desabilitado se o período for 'Anual', caso contrário, habilita
-      dtInicioField.disabled = periodo === 'Anual';
+    if (periodo === 'Mensal') {
+      // Configuração para data início
+      if (dtInicioField) {
+        dtInicioField.disabled = false;
+        dtInicioField.validate = (value: any) => ({
+          valid: this.validateCurrentMonth(value),
+          errorMessage: 'Data início deve ser do mês atual'
+        });
+        this.formOrcamento.dt_inicio = new Date().toISOString().split('T')[0];
+      }
+  
+      // Configuração para data fim
+      if (dtFimField) {
+        dtFimField.disabled = false;
+        dtFimField.validate = (value: any) => ({
+          valid: this.validateCurrentMonth(value),
+          errorMessage: 'Data final deve ser do mês atual'
+        });
+        this.formOrcamento.dt_fim = new Date().toISOString().split('T')[0];
+      }
+    } else {
+      // Configuração para período anual
+      if (dtInicioField) {
+        dtInicioField.disabled = false; // Alterado para false para permitir edição
+        dtInicioField.validate = (value: any) => ({
+          valid: this.validateCurrentMonth(value),
+          errorMessage: 'Data início deve ser do ano atual' // Mensagem atualizada
+        });
+        // Define a data inicial como primeiro dia do ano atual
+        const firstDayOfYear = new Date(new Date().getFullYear(), 0, 1);
+        this.formOrcamento.dt_inicio = firstDayOfYear.toISOString().split('T')[0];
+      }
+      if (dtFimField) {
+        dtFimField.disabled = false; // Alterado para false para permitir edição
+        dtFimField.validate = (value: any) => ({
+          valid: this.validateCurrentMonth(value),
+          errorMessage: 'Data final deve ser do ano atual' // Mensagem atualizada
+        });
+        // Define a data final como último dia do ano atual
+        const lastDayOfYear = new Date(new Date().getFullYear(), 11, 31);
+        this.formOrcamento.dt_fim = lastDayOfYear.toISOString().split('T')[0];
+      }
     }
-
-    // Se o período for 'Anual', limpa o valor do campo 'dt_inicio'
-    if (periodo === 'Anual') {
-      this.formOrcamento.dt_inicio = null; // ou '' dependendo do que você preferir
-    }
   
-    // Atualiza o array de campos para forçar a detecção de mudanças
     this.fields = [...this.fields];
+  
+    if (periodo === 'Anual' && this.itemListComponent?.items.length > 1) {
+      this.notify.warning({
+        duration: 3000,
+        message: 'Período anual permite apenas 1 item. Itens anteriores foram removidos.'
+      });
+      this.itemListComponent.items = [this.itemListComponent.items[0]];
+      this.itemListComponent.itemSequence = 2;
+    }
   }
 
   // Método para lidar com mudanças no formulário
@@ -168,7 +254,23 @@ export class NovoorcamentoComponent implements OnInit {
       this.onPeriodoChange(event.value);
     }
 
-    //Não está funcionando
+     //Não está funcionando
+    if (this.periodoAtual === 'Mensal') {
+      if (event.property === 'dt_inicio' && !this.validateCurrentMonth(event.value)) {
+        this.notify.warning({
+          duration: 2000,
+          message: 'Data início deve ser do mês atual!'
+        });
+      }
+      
+      if (event.property === 'dt_fim' && !this.validateCurrentMonth(event.value)) {
+        this.notify.warning({
+          duration: 2000,
+          message: 'Data final deve ser do mês atual!'
+        });
+      }
+    }
+    
     if (event.property === 'codigo_orcamento') {
       this.onCodigoChange(event.value);
     }
@@ -188,8 +290,87 @@ export class NovoorcamentoComponent implements OnInit {
     console.log('Itens atualizados:', this.itemListComponent.items);
   }
 
+    // Método para obter a data mínima (primeiro dia do mês atual)
+  getMinDateForPeriod(): Date {
+    const today = new Date();
+    return new Date(today.getFullYear(), today.getMonth(), 1);
+  }
+
+  // Método para obter a data máxima (último dia do mês atual)
+  getMaxDateForPeriod(): Date {
+    const today = new Date();
+    return new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  }
+
   public confirmarForm(form: any) {
-    // Verifica se há itens na lista
+    // Validação para período mensal
+    if (this.periodoAtual === 'Mensal') {
+      const today = new Date();
+      const currentMonth = today.getMonth();
+      const currentYear = today.getFullYear();
+  
+      const startDate = new Date(form.dt_inicio);
+      const endDate = form.dt_fim ? new Date(form.dt_fim) : null;
+  
+      if (!this.validateCurrentMonth(form.dt_inicio)) {
+        this.notify.error({
+          duration: 3000,
+          message: `A data inicial deve ser do mês atual (${this.currentMonthName}/${this.currentYear})`
+        });
+        return;
+      }
+  
+      if (endDate && !this.validateCurrentMonth(form.dt_fim)) {
+        this.notify.error({
+          duration: 3000,
+          message: `A data final deve ser do mês atual (${this.currentMonthName}/${this.currentYear})`
+        });
+        return;
+      }
+  
+      if (endDate && startDate > endDate) {
+        this.notify.error({
+          duration: 3000,
+          message: 'A data final não pode ser anterior à data inicial'
+        });
+        return;
+      }
+    }
+    
+    // Validação para período anual
+    if (this.periodoAtual === 'Anual') {
+      const today = new Date();
+      const currentYear = today.getFullYear();
+  
+      const startDate = new Date(form.dt_inicio);
+      const endDate = form.dt_fim ? new Date(form.dt_fim) : null;
+  
+      if (startDate.getFullYear() !== currentYear) {
+        this.notify.error({
+          duration: 3000,
+          message: `A data inicial deve ser do ano atual (${currentYear})`
+        });
+        return;
+      }
+  
+      if (endDate && endDate.getFullYear() !== currentYear) {
+        this.notify.error({
+          duration: 3000,
+          message: `A data final deve ser do ano atual (${currentYear})`
+        });
+        return;
+      }
+  
+      if (endDate && startDate > endDate) {
+        this.notify.error({
+          duration: 3000,
+          message: 'A data final não pode ser anterior à data inicial'
+        });
+        return;
+      }
+    }
+  
+    // Restante da validação...
     if (this.itemListComponent.items.length === 0) {
       this.notify.warning({
         duration: 2000,
@@ -197,7 +378,7 @@ export class NovoorcamentoComponent implements OnInit {
       });
       return;
     }
-
+     
     // Adiciona zeros à esquerda se o código tiver menos de 10 dígitos
     form.codigo_orcamento = form.codigo_orcamento.toString().padStart(10, '0');
 
@@ -213,7 +394,7 @@ export class NovoorcamentoComponent implements OnInit {
     // Log para depuração
     console.log('Payload do orçamento:', payload);
 
-    // Salvar o orçamento com os itens
+    // Salvar o orçamento com os itens    
     this.http.post<any>(`${this.url}/api/mock/orcamento`, payload).subscribe({
       next: (response) => {
         this.isEditing = true;
@@ -221,14 +402,12 @@ export class NovoorcamentoComponent implements OnInit {
           duration: 2000,
           message: 'Orçamento e itens cadastrados com sucesso.',
         });
-
         // Incrementa o valor do campo numero_versao apenas se estiver editando
         if (this.isEditing) {
           this.formOrcamento.numero_versao = (
             parseInt(this.formOrcamento.numero_versao) + 1
           ).toString();
         }
-
         // Navega para a lista de orçamentos
         this.route.navigate(['/orcamentos']);
       },
