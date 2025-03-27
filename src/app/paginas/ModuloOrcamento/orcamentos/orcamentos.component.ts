@@ -144,6 +144,13 @@ export class OrcamentosComponent implements OnInit {
       allowColumnsManager: true,
     },
     {
+      property: 'periodo',
+      label: 'Período',
+      type: 'string',
+      filter: true,
+      allowColumnsManager: true,
+    },
+    {
       property: 'dt_inicio',
       label: 'Data Início',
       type: 'string',
@@ -201,6 +208,11 @@ export class OrcamentosComponent implements OnInit {
       gridColumns: 6,
       divider: 'Dados do Orçamento',
     },
+    {
+      property: 'periodo',
+      label: 'Período',
+      gridColumns: 6,
+    },
     { property: 'dt_inicio', label: 'Data Início', gridColumns: 6 },
     { property: 'dt_fim', label: 'Data Fim', gridColumns: 6 },
     { property: 'numero_versao', label: 'Versão', gridColumns: 6 },
@@ -211,6 +223,7 @@ export class OrcamentosComponent implements OnInit {
   public editFields: PoDynamicFormField[] = [
     { property: 'codigo_orcamento', label: 'Código', required: true, disabled: true },
     { property: 'descricao_orcamento', label: 'Descrição', required: true },
+    { property: 'periodo', label: 'Período', required: true },
     {
       property: 'dt_inicio',
       label: 'Data Início',
