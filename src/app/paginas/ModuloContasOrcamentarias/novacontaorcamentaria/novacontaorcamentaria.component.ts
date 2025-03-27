@@ -21,9 +21,9 @@ export class NovacontaorcamentariaComponent {
   private route = inject(Router);
   private url: string = environment.url;
   private notify = inject(PoNotificationService);
-
-  public filterService: string = `${this.url}/api/mock/contaorcamentaria`;
   private codigoExiste: boolean = false; // Flag para indicar se o código já existe
+  
+  public filterService: string = `${this.url}/api/mock/contaorcamentaria`;
 
   public fields: PoDynamicFormField[] = [
     {

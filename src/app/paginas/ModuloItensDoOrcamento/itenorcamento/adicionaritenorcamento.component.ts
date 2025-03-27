@@ -23,7 +23,18 @@ import {
   styleUrl: './adicionaritenorcamento.component.css',
 })
 export class AdicionaritenorcamentoComponent {
+
+  // Valores do formulário
+  formValues: any = {};
+
+  // Contador de sequência de itens
+  itemSequence: number = 1;
+
   @Output() itemAdicionado = new EventEmitter<any>();
+  
+  constructor() {
+    this.formValues.item = this.itemSequence;
+  }
 
   // Campos do formulário dinâmico
   fields: PoDynamicFormField[] = [
@@ -95,16 +106,6 @@ export class AdicionaritenorcamentoComponent {
       noAutocomplete: true,
     },
   ];
-
-  // Valores do formulário
-  formValues: any = {};
-
-  // Contador de sequência de itens
-  itemSequence: number = 1;
-
-  constructor() {
-    this.formValues.item = this.itemSequence;
-  }
 
   // Método para capturar mudanças no formulário
   onFormChange(event: any) {

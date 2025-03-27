@@ -21,6 +21,9 @@ export class NovocentrodecustoComponent {
   private url: string = environment.url;
   private notify = inject(PoNotificationService);
 
+  public isEditing: boolean = false; // Adiciona a propriedade isEditing
+  public formOrcamento: Centrodecusto = new Centrodecusto();
+
   public fields: PoDynamicFormField[] = [
     {
       property: 'codigo',
@@ -44,9 +47,6 @@ export class NovocentrodecustoComponent {
       noAutocomplete: true,
     },
   ];
-
-  public formOrcamento: Centrodecusto = new Centrodecusto();
-  public isEditing: boolean = false; // Adiciona a propriedade isEditing
 
   public confirmarForm(form: any) {
     // Adiciona zeros à esquerda se o código tiver menos de 10 dígitos

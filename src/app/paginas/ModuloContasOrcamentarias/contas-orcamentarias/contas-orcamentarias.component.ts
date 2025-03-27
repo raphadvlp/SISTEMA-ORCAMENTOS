@@ -32,6 +32,9 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ContasOrcamentariasComponent {
   title = 'Contas Orçamentárias';
+  public url: string = `${environment.url}/api/mock/contaorcamentaria`;
+  public codigo_contaorcamentaria: string = '';
+  public contaOrcamentariaData: any = {};
 
   constructor(
     private configService: ConfigService,
@@ -107,14 +110,10 @@ export class ContasOrcamentariasComponent {
     },
   ];
 
-  public url: string = `${environment.url}/api/mock/contaorcamentaria`;
-
   public actions: PoPageDynamicTableActions = {
     new: '/novacontaorcamentaria',
     remove: true,
   };
-
-  public codigo_contaorcamentaria: string = '';
 
   public userFields: PoDynamicViewField[] = [
     { property: 'codigo_contaorcamentaria', label: 'Código', gridColumns: 6 },
@@ -141,8 +140,6 @@ export class ContasOrcamentariasComponent {
     { property: 'condicao', label: 'Condição', gridColumns: 6 },
     { property: 'cod_natureza', label: 'Código Natureza', gridColumns: 6 },
   ];
-
-  public contaOrcamentariaData: any = {};
 
   public primaryAction = {
     action: this.saveUser.bind(this),

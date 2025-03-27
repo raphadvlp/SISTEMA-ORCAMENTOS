@@ -50,8 +50,31 @@ export class OrcamentosComponent implements OnInit {
   lookupServiceContaOrcamentaria = `${environment.url}/api/mock/contaorcamentaria`;
   lookupServiceCentroDeCusto = `${environment.url}/api/mock/centrodecusto`;
 
+  public url: string = `${environment.url}/api/mock/orcamento`;
+
   // Variável para controlar se está no modo de edição
   public isEditMode: boolean = false;
+  public editData: any = {};
+
+  // Dados do novo item
+  public newItem: any = {};
+
+  // Dados do item sendo editado
+  public itemEditData: any = {};
+  public orcamentoData: any = {};
+  public descricao_orcamento: string = '';
+  public isEditingItem: boolean = false;
+
+  @ViewChild('userDetailModal') userModalEl!: PoModalComponent;
+  @ViewChild('editModal') editModalEl!: PoModalComponent;
+  @ViewChild('pageOrcamentos') pageOrcamentos!: PoPageDynamicTableComponent;
+  // @ViewChild('pageOrcamentos') pageOrcamentos: any; // Referência à tabela de orçamentos
+
+  // Referência ao modal de edição de itens
+  @ViewChild('editItemModal') editItemModal!: PoModalComponent;
+
+  // Referência ao modal de adição de itens
+  @ViewChild('addItemModal') addItemModal!: PoModalComponent;
 
   constructor(
     private configService: ConfigService,
@@ -65,8 +88,6 @@ export class OrcamentosComponent implements OnInit {
   ngOnInit() {
     this.loadData(); // Carrega os dados ao inicializar o componente
   }
-
-  public editData: any = {};
 
   // Método para carregar os dados
   public loadData() {
@@ -83,16 +104,6 @@ export class OrcamentosComponent implements OnInit {
       },
     });
   }
-
-  @ViewChild('pageOrcamentos') pageOrcamentos!: PoPageDynamicTableComponent;
-  // @ViewChild('pageOrcamentos') pageOrcamentos: any; // Referência à tabela de orçamentos
-
-  // Referência ao modal de edição de itens
-  @ViewChild('editItemModal') editItemModal!: PoModalComponent;
-
-  // Dados do item sendo editado
-  public itemEditData: any = {};
-  public isEditingItem: boolean = false;
 
   // Campos do formulário de edição de itens
   public itemFields: PoDynamicFormField[] = [
@@ -187,17 +198,10 @@ export class OrcamentosComponent implements OnInit {
     },
   ];
 
-  public url: string = `${environment.url}/api/mock/orcamento`;
-
   public actions: PoPageDynamicTableActions = {
     new: '/novoorcamento',
     remove: true,
   };
-
-  public descricao_orcamento: string = '';
-
-  @ViewChild('userDetailModal') userModalEl!: PoModalComponent;
-  @ViewChild('editModal') editModalEl!: PoModalComponent;
 
   // Detalhes do orçamento
   public orcamentoFields: PoDynamicViewField[] = [
@@ -279,8 +283,6 @@ export class OrcamentosComponent implements OnInit {
     { property: 'dataP', label: 'Período', type: 'date' },
     { property: 'valor', label: 'Valor', type: 'number' },
   ];
-
-  public orcamentoData: any = {};
 
   // Chamar o método para atualizar a visibilidade das colunas ao abrir os modais
   public openDetailUser(conta: any) {
@@ -366,39 +368,34 @@ export class OrcamentosComponent implements OnInit {
   // }
 
   // Salvar edição do item
-public saveItemEdit() {
-  // Extrai apenas os códigos dos campos com searchService
-  const itemToSave = {
-    ...this.itemEditData,
-    conta: this.itemEditData.conta?.codigo_contaorcamentaria || this.itemEditData.conta,
-    cc: this.itemEditData.cc?.codigo || this.itemEditData.cc
-  };
+  public saveItemEdit() {
+    // Extrai apenas os códigos dos campos com searchService
+    const itemToSave = {
+      ...this.itemEditData,
+      conta: this.itemEditData.conta?.codigo_contaorcamentaria || this.itemEditData.conta,
+      cc: this.itemEditData.cc?.codigo || this.itemEditData.cc
+    };
 
-  // Encontra o índice do item que está sendo editado
-  const index = this.editData.itens.findIndex(
-    (i: any) => i.item === itemToSave.item
-  );
+    // Encontra o índice do item que está sendo editado
+    const index = this.editData.itens.findIndex(
+      (i: any) => i.item === itemToSave.item
+    );
 
-  // Se o item for encontrado, atualiza os dados
-  if (index !== -1) {
-    this.editData.itens[index] = itemToSave;
+    // Se o item for encontrado, atualiza os dados
+    if (index !== -1) {
+      this.editData.itens[index] = itemToSave;
+    }
+
+    // Fecha o modal de edição
+    this.editItemModal.close();
+    this.isEditingItem = false;
   }
-
-  // Fecha o modal de edição
-  this.editItemModal.close();
-  this.isEditingItem = false;
-}
 
   // Remover item da lista
   public removeItem(item: any) {
     this.editData.itens = this.editData.itens.filter((i: any) => i !== item);
   }
 
-  // Referência ao modal de adição de itens
-  @ViewChild('addItemModal') addItemModal!: PoModalComponent;
-
-  // Dados do novo item
-  public newItem: any = {};
 
   // Abrir modal para adicionar novo item
   public openAddItemModal() {

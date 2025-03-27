@@ -30,6 +30,11 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./usuarios.component.css'],
 })
 export class UsuariosComponent {
+
+  public url: string = `${environment.url}/api/mock/usuario`;
+  public username: string = '';
+  public userData: any = {};
+
   constructor(
     private configService: ConfigService,
     private http: HttpClient,
@@ -82,14 +87,10 @@ export class UsuariosComponent {
     },
   ];
 
-  public url: string = `${environment.url}/api/mock/usuario`;
-
   public actions: PoPageDynamicTableActions = {
     new: '/novousuario',
     remove: true,
   };
-
-  public username: string = '';
 
   public userFormFields: PoDynamicFormField[] = [
     { property: 'id', label: 'ID', gridColumns: 6, key: true, visible: false },
@@ -158,8 +159,6 @@ export class UsuariosComponent {
     },
   ];
 
-  public userData: any = {};
-
   public primaryAction = {
     action: this.saveUser.bind(this),
     label: 'Salvar',
@@ -208,7 +207,9 @@ export class UsuariosComponent {
           this.notify.error(
             'Usuário não encontrado. Verifique o ID ou o endpoint.'
           );
-        } else {
+        } 
+        else 
+        {
           this.notify.error(`Erro ao atualizar usuário: ${error.message}`);
         }
       },

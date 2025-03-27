@@ -36,11 +36,6 @@ export class ItemListComponent implements OnInit {
 
   lookupServiceContaOrcamentaria = `${environment.url}/api/mock/contaorcamentaria`;
   lookupServiceCentroDeCusto = `${environment.url}/api/mock/centrodecusto`;
-
-  // lookupServiceContaOrcamentaria =
-  //   'http://localhost:8000/api/mock/contaorcamentaria';
-  // lookupServiceCentroDeCusto = 'http://localhost:8000/api/mock/centrodecusto';
-
   
   // Valores do formulário
   formValues: any = {};

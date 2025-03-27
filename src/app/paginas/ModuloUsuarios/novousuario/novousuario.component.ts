@@ -18,6 +18,12 @@ import { environment } from '../../../../environments/environment';
   styleUrl: './novousuario.component.css',
 })
 export class NovousuarioComponent {
+
+  private http = inject(HttpClient);
+  private route = inject(Router);
+  private url: string = environment.url;
+  private notify = inject(PoNotificationService);
+
   public fields: PoDynamicFormField[] = [
     // { property: 'id', label: 'ID', type: 'number', gridColumns: 12 },
     {
@@ -114,11 +120,6 @@ export class NovousuarioComponent {
       forceOptionsComponentType: ForceOptionComponentEnum.select,
     },
   ];
-
-  private http = inject(HttpClient);
-  private route = inject(Router);
-  private url: string = environment.url;
-  private notify = inject(PoNotificationService);
 
   public confirmarForm(form: any) {
     this.http.post<any>(`${this.url}/api/mock/usuario`, form).subscribe({

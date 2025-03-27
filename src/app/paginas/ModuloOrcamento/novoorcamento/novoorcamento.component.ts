@@ -22,6 +22,17 @@ export class NovoorcamentoComponent implements OnInit {
   private route = inject(Router);
   private url: string = environment.url;
   private notify = inject(PoNotificationService);
+
+  // Valores do formulário
+  public formOrcamento: any = {};
+
+  // Contador de sequência de itens
+  public versaoSequence: number = 1;
+
+  public isEditing: boolean = false; // Adiciona a propriedade isEditing
+
+  // Controle do período
+  public periodoAtual: string = 'Mensal';
   
   currentMonthName = new Date().toLocaleDateString('pt-BR', { month: 'long' });
   lastDayOfMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate().toString().padStart(2, '0');
@@ -109,14 +120,6 @@ export class NovoorcamentoComponent implements OnInit {
     },
   ];
 
-  // Valores do formulário
-  public formOrcamento: any = {};
-
-  // Contador de sequência de itens
-  versaoSequence: number = 1;
-
-  public isEditing: boolean = false; // Adiciona a propriedade isEditing
-
   validateCurrentMonth(date: string | Date): boolean {
     if (!date) return false;
     
@@ -180,10 +183,6 @@ export class NovoorcamentoComponent implements OnInit {
       this.onPeriodoChange(periodo);
     }
   }
-
-   // Controle do período
-   public periodoAtual: string = 'Mensal';
-
 
    onPeriodoChange(periodo: string) {
     console.log('Período alterado para:', periodo);

@@ -51,6 +51,8 @@ export class CentrodecustoComponent {
   public isEditingItem: boolean = false;
   public centroDeCustoData: any = {};
   public editData: any = {};
+  public descricao: string = '';
+  public url: string = `${environment.url}/api/mock/centrodecusto`;
 
   constructor(
     private configService: ConfigService,
@@ -95,15 +97,6 @@ export class CentrodecustoComponent {
     { label: 'Editar', action: this.openEditModal.bind(this) },
   ];
 
-  public url: string = `${environment.url}/api/mock/centrodecusto`;
-
-  public actions: PoPageDynamicTableActions = {
-    new: '/novocentrodecusto',
-    remove: true,
-  };
-
-  public descricao: string = '';
-
   public centroDeCustoFields: PoDynamicViewField[] = [
     { property: 'codigo', label: 'Código', gridColumns: 6 },
     { property: 'descricao', label: 'Descrição', gridColumns: 6 },
@@ -114,7 +107,10 @@ export class CentrodecustoComponent {
     { property: 'descricao', label: 'Descrição', required: true },
   ];
 
-
+  public actions: PoPageDynamicTableActions = {
+    new: '/novocentrodecusto',
+    remove: true,
+  };
 
   public openDetailUser(conta: any) {
     this.descricao = conta.descricao;
