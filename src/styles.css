@@ -61,7 +61,7 @@ po-button {
   --shadow: var(--shadow-none);
   --color-hover: var(--color-action-hover);
   --background-hover: #032340;
-  --border-color-hover: var(--color-brand-01-darkest);
+  --border-color-hover: #FFF;
   --outline-color-focused: var(--color-action-focus);
   --color-pressed: var(--color-action-pressed);
   --background-pressed: var(--color-brand-01-light);
