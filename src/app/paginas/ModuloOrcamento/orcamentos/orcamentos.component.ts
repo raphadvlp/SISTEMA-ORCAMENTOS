@@ -47,6 +47,9 @@ import { AdicionaritenorcamentoComponent } from '../../ModuloItensDoOrcamento/it
 export class OrcamentosComponent implements OnInit {
   title = 'Orçamentos';
 
+  lookupServiceContaOrcamentaria = `${environment.url}/api/mock/contaorcamentaria`;
+  lookupServiceCentroDeCusto = `${environment.url}/api/mock/centrodecusto`;
+
   // Variável para controlar se está no modo de edição
   public isEditMode: boolean = false;
 
@@ -95,8 +98,24 @@ export class OrcamentosComponent implements OnInit {
   public itemFields: PoDynamicFormField[] = [
     { property: 'item', label: 'Item', required: true },
     { property: 'orcamento', label: 'Orçamento', required: true },
-    { property: 'conta', label: 'Conta', required: true },
-    { property: 'cc', label: 'CC', required: true },
+    { property: 'conta', label: 'Conta', required: true ,
+      searchService: this.lookupServiceContaOrcamentaria,
+      fieldLabel: 'nome_contaorcamentaria', // Exibe apenas o código
+      fieldValue: 'nome_contaorcamentaria', // Valor retornado ao selecionar
+      columns: [ // Colunas exibidas no lookup
+        { property: 'codigo_contaorcamentaria', label: 'Código' },
+        { property: 'nome_contaorcamentaria', label: 'Nome' },
+      ],
+    },
+    { property: 'cc', label: 'CC', required: true,
+      searchService: this.lookupServiceCentroDeCusto,
+      fieldLabel: 'codigo', // Nome da propriedade que será exibida no lookup
+      fieldValue: 'codigo', // Nome da propriedade que será usada como valor
+      columns: [ // Colunas exibidas no lookup
+        { property: 'codigo', label: 'Código' },
+        { property: 'descricao', label: 'Nome' },
+      ],
+    },
     { property: 'dataP', label: 'Data', type: 'date', required: true },
     { property: 'valor', label: 'Valor', type: 'number', required: true },
   ];
@@ -190,7 +209,7 @@ export class OrcamentosComponent implements OnInit {
 
   // Campos para edição do orçamento
   public editFields: PoDynamicFormField[] = [
-    { property: 'codigo_orcamento', label: 'Código', required: true },
+    { property: 'codigo_orcamento', label: 'Código', required: true, disabled: true },
     { property: 'descricao_orcamento', label: 'Descrição', required: true },
     {
       property: 'dt_inicio',
@@ -281,10 +300,34 @@ export class OrcamentosComponent implements OnInit {
     });
   }
 
+  // Método para obter a descrição da conta
+  private getContaDescription(codigo: string): string {
+    if (!this.orcamentoData.itens) return '';
+    const item = this.orcamentoData.itens.find((i: any) => i.conta === codigo);
+    return item ? item.contaDescription : ''; // Você precisará armazenar essa informação
+  }
+
+  // Método para obter a descrição do centro de custo
+  private getCcDescription(codigo: string): string {
+    if (!this.orcamentoData.itens) return '';
+    const item = this.orcamentoData.itens.find((i: any) => i.cc === codigo);
+    return item ? item.ccDescription : ''; // Você precisará armazenar essa informação
+  }
+
   // Abrir modal para editar item
   public editItem(item: any) {
     if (this.editItemModal) {
-      this.itemEditData = { ...item }; // Copia os dados do item para edição
+      this.itemEditData = { ...item, 
+        conta: { 
+          codigo_contaorcamentaria: item.conta,
+          nome_contaorcamentaria: this.getContaDescription(item.conta)
+        },
+        cc: {
+          codigo: item.cc,
+          descricao: this.getCcDescription(item.cc)
+        }
+      }; // Copia os dados do item para edição
+
       this.isEditingItem = true;
       this.editItemModal.open(); // Abre o modal de edição de item
     } else {
@@ -292,22 +335,46 @@ export class OrcamentosComponent implements OnInit {
     }
   }
 
+  // // Salvar edição do item
+  // public saveItemEdit() {
+  //   // Encontra o índice do item que está sendo editado
+  //   const index = this.editData.itens.findIndex(
+  //     (i: any) => i.item === this.itemEditData.item
+  //   );
+
+  //   // Se o item for encontrado, atualiza os dados
+  //   if (index !== -1) {
+  //     this.editData.itens[index] = { ...this.itemEditData }; // Atualiza o item na lista
+  //   }
+
+  //   // Fecha o modal de edição
+  //   this.editItemModal.close();
+  //   this.isEditingItem = false;
+  // }
+
   // Salvar edição do item
-  public saveItemEdit() {
-    // Encontra o índice do item que está sendo editado
-    const index = this.editData.itens.findIndex(
-      (i: any) => i.item === this.itemEditData.item
-    );
+public saveItemEdit() {
+  // Extrai apenas os códigos dos campos com searchService
+  const itemToSave = {
+    ...this.itemEditData,
+    conta: this.itemEditData.conta?.codigo_contaorcamentaria || this.itemEditData.conta,
+    cc: this.itemEditData.cc?.codigo || this.itemEditData.cc
+  };
 
-    // Se o item for encontrado, atualiza os dados
-    if (index !== -1) {
-      this.editData.itens[index] = { ...this.itemEditData }; // Atualiza o item na lista
-    }
+  // Encontra o índice do item que está sendo editado
+  const index = this.editData.itens.findIndex(
+    (i: any) => i.item === itemToSave.item
+  );
 
-    // Fecha o modal de edição
-    this.editItemModal.close();
-    this.isEditingItem = false;
+  // Se o item for encontrado, atualiza os dados
+  if (index !== -1) {
+    this.editData.itens[index] = itemToSave;
   }
+
+  // Fecha o modal de edição
+  this.editItemModal.close();
+  this.isEditingItem = false;
+}
 
   // Remover item da lista
   public removeItem(item: any) {
@@ -326,19 +393,37 @@ export class OrcamentosComponent implements OnInit {
     this.addItemModal.open(); // Abre o modal de adição de item
   }
 
+  // // Método para adicionar novo item à lista
+  // public adicionarItem(novoItem: any) {
+  //   if (!this.editData.itens) {
+  //     this.editData.itens = []; // Inicializa a lista de itens se estiver vazia
+  //   }
+
+  //   // Adiciona o novo item à lista com as ações
+  //   this.editData.itens.push({
+  //     ...novoItem,
+  //     actions: ['edit', 'delete'], // Adiciona as ações
+  //   });
+
+  //   // Fecha o modal de adição de item
+  //   this.addItemModal.close();
+  // }
+
   // Método para adicionar novo item à lista
   public adicionarItem(novoItem: any) {
     if (!this.editData.itens) {
-      this.editData.itens = []; // Inicializa a lista de itens se estiver vazia
+      this.editData.itens = [];
     }
 
-    // Adiciona o novo item à lista com as ações
-    this.editData.itens.push({
+    // Formata os dados antes de adicionar
+    const itemToAdd = {
       ...novoItem,
-      actions: ['edit', 'delete'], // Adiciona as ações
-    });
+      conta: novoItem.conta?.codigo_contaorcamentaria || novoItem.conta,
+      cc: novoItem.cc?.codigo || novoItem.cc,
+      actions: ['edit', 'delete']
+    };
 
-    // Fecha o modal de adição de item
+    this.editData.itens.push(itemToAdd);
     this.addItemModal.close();
   }
 
