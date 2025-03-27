@@ -37,12 +37,13 @@
   <p *ngIf="!editData.itens || editData.itens.length === 0">
     Nenhum item encontrado.
   </p>
+  
   <!-- Botão para adicionar novo item -->
-  <po-button
+  <po-button class="btn-edt"
     p-label="Adicionar Item"
     (p-click)="openAddItemModal()"
   ></po-button>
-  <po-button p-label="Salvar" (p-click)="saveEdit()"></po-button>
+  <po-button class="btn-salvar-orcamento btn-edt" p-label="Salvar Orçamento" (p-click)="saveEdit()"></po-button>
 </po-modal>
 
 <!-- Modal de edição de item -->
