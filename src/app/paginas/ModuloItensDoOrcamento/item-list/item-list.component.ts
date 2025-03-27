@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -13,6 +13,7 @@ import {
 import { environment } from '../../../../environments/environment';
 
 import { BrCurrencyPipe } from './br-currency.pipe';
+import { NovoorcamentoComponent } from '@app/paginas/ModuloOrcamento/novoorcamento/novoorcamento.component';
 
 @Component({
   selector: 'app-item-list',
@@ -30,6 +31,8 @@ import { BrCurrencyPipe } from './br-currency.pipe';
   ],
 })
 export class ItemListComponent implements OnInit {
+  
+  constructor(private http: HttpClient) {}
 
   lookupServiceContaOrcamentaria = `${environment.url}/api/mock/contaorcamentaria`;
   lookupServiceCentroDeCusto = `${environment.url}/api/mock/centrodecusto`;
@@ -37,6 +40,30 @@ export class ItemListComponent implements OnInit {
   // lookupServiceContaOrcamentaria =
   //   'http://localhost:8000/api/mock/contaorcamentaria';
   // lookupServiceCentroDeCusto = 'http://localhost:8000/api/mock/centrodecusto';
+
+  
+  // Valores do formulário
+  formValues: any = {};
+
+  // Lista de itens
+  items: any[] = [];
+  orcamentoSalvo: any = null;
+
+  // Índice do item sendo editado
+  editingIndex: number | null = null;
+
+  // Contador de sequência de itens
+  itemSequence: number = 1;
+
+  // Propriedade para receber o período
+  @Input() periodo: string = 'Mensal';
+
+  // Referencia ao componente Novo Orçamento
+  @ViewChild(NovoorcamentoComponent) novoOrcamentoComponent!: NovoorcamentoComponent;
+
+  ngOnInit() {
+    this.formValues.item = this.itemSequence;
+  }
 
   // Campos do formulário dinâmico
   fields: PoDynamicFormField[] = [
@@ -121,26 +148,6 @@ export class ItemListComponent implements OnInit {
     },
   ];
 
-
-
-  // Valores do formulário
-  formValues: any = {};
-
-  // Lista de itens
-  items: any[] = [];
-  orcamentoSalvo: any = null;
-
-  // Índice do item sendo editado
-  editingIndex: number | null = null;
-
-  // Contador de sequência de itens
-  itemSequence: number = 1;
-
-  // Propriedade para receber o período
-  @Input() periodo: string = 'Mensal';
-
-  
-
   // Colunas da tabela
   columns = [
     { property: 'item', label: 'Item' },
@@ -176,12 +183,6 @@ export class ItemListComponent implements OnInit {
   ];
   
 
-  constructor(private http: HttpClient) {}
-
-  ngOnInit() {
-    this.formValues.item = this.itemSequence;
-  }
-
   // Método para capturar mudanças no formulário
   onFormChange(event: any) {
     if (event.property === 'conta' && event.value) {
@@ -203,7 +204,8 @@ export class ItemListComponent implements OnInit {
   // Método para atualizar o estado dos campos
   atualizarEstadoCampos() {
     const camposParaDesabilitar = ['orcamento', 'conta', 'cc', 'dataP', 'valor'];
-    const deveDesabilitar = this.periodo === 'Anual' && this.items.length >= 1;
+    const deveDesabilitar = this.periodo === 'Anual';
+    //&& this.items.length >= 1;
 
     this.fields = this.fields.map(field => {
       if (camposParaDesabilitar.includes(field.property)) {
@@ -221,6 +223,7 @@ export class ItemListComponent implements OnInit {
   adicionarOuSalvarItem() {
     if (this.periodo === 'Anual' && this.items.length >= 1 && this.editingIndex === null) {
       alert('Período anual permite apenas 1 item. Não é possível adicionar mais itens.');
+      console.log('Período anual permite apenas 1 item. Não é possível adicionar mais itens.');
       return;
     }
   
