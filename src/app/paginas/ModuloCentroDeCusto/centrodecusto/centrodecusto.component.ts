@@ -49,6 +49,16 @@ export class CentrodecustoComponent {
 
   public itemEditData: any = {};
   public isEditingItem: boolean = false;
+  public centroDeCustoData: any = {};
+  public editData: any = {};
+
+  constructor(
+    private configService: ConfigService,
+    private http: HttpClient,
+    private notify: PoNotificationService
+  ) {
+    configService.setConfig('centrodecusto', 'id');
+  }
 
   public itemFields: PoDynamicFormField[] = [
     { property: 'codigo', label: 'Código', required: true },
@@ -100,20 +110,11 @@ export class CentrodecustoComponent {
   ];
 
   public editFields: PoDynamicFormField[] = [
-    { property: 'codigo', label: 'Código', required: true },
+    { property: 'codigo', label: 'Código', required: true, disabled: true },
     { property: 'descricao', label: 'Descrição', required: true },
   ];
 
-  public centroDeCustoData: any = {};
-  public editData: any = {};
 
-  constructor(
-    private configService: ConfigService,
-    private http: HttpClient,
-    private notify: PoNotificationService
-  ) {
-    configService.setConfig('centrodecusto', 'id');
-  }
 
   public openDetailUser(conta: any) {
     this.descricao = conta.descricao;
