@@ -1,7 +1,15 @@
-<po-page-default p-title="Novo Centro de Custo">
+<po-page-default p-title="Novo Centro de Custo" 
+[p-breadcrumb]="{
+  items: [
+    { label: 'Home', link: '/home' },
+    { label: 'Centro de Custo', link: '/centrodecusto' },
+    { label: 'Novo Centro de Custo', link: '/novocentrodecusto' }
+  ]
+}">
   <po-dynamic-form
     [p-fields]="fields"
     [p-value]="formOrcamento"
+    
   ></po-dynamic-form>
   <div class="po-row">
     <po-button
