@@ -105,32 +105,7 @@ export class OrcamentosComponent implements OnInit {
     });
   }
 
-  // Campos do formulário de edição de itens
-  public itemFields: PoDynamicFormField[] = [
-    { property: 'item', label: 'Item', required: true },
-    { property: 'orcamento', label: 'Orçamento', required: true },
-    { property: 'conta', label: 'Conta', required: true ,
-      searchService: this.lookupServiceContaOrcamentaria,
-      fieldLabel: 'nome_contaorcamentaria', // Exibe apenas o código
-      fieldValue: 'nome_contaorcamentaria', // Valor retornado ao selecionar
-      columns: [ // Colunas exibidas no lookup
-        { property: 'codigo_contaorcamentaria', label: 'Código' },
-        { property: 'nome_contaorcamentaria', label: 'Nome' },
-      ],
-    },
-    { property: 'cc', label: 'CC', required: true,
-      searchService: this.lookupServiceCentroDeCusto,
-      fieldLabel: 'codigo', // Nome da propriedade que será exibida no lookup
-      fieldValue: 'codigo', // Nome da propriedade que será usada como valor
-      columns: [ // Colunas exibidas no lookup
-        { property: 'codigo', label: 'Código' },
-        { property: 'descricao', label: 'Nome' },
-      ],
-    },
-    { property: 'dataP', label: 'Data', type: 'date', required: true },
-    { property: 'valor', label: 'Valor', type: 'number', required: true },
-  ];
-
+  //Campos da tabela princiapl
   public fields: PoPageDynamicTableField[] = [
     {
       property: 'id',
@@ -164,14 +139,16 @@ export class OrcamentosComponent implements OnInit {
     {
       property: 'dt_inicio',
       label: 'Data Início',
-      type: 'string',
+      type: 'date', //TODO: VERIFICAR COMO IRÁ SE COMPORTAR NO BANCO DE DADOS
       allowColumnsManager: true,
+      format: 'dd/MM/yyyy',
     },
     {
       property: 'dt_fim',
       label: 'Data Final',
-      type: 'string',
+      type: 'date', //TODO: VERIFICAR COMO IRÁ SE COMPORTAR NO BANCO DE DADOS
       allowColumnsManager: true,
+      format: 'dd/MM/yyyy', 
     },
     {
       property: 'numero_versao',
@@ -203,6 +180,32 @@ export class OrcamentosComponent implements OnInit {
     remove: true,
   };
 
+    // Campos do formulário de edição de itens
+    public itemFields: PoDynamicFormField[] = [
+      { property: 'item', label: 'Item', required: true, disabled: true },
+      { property: 'orcamento', label: 'Orçamento', required: true },
+      { property: 'conta', label: 'Conta', required: true ,
+        searchService: this.lookupServiceContaOrcamentaria,
+        fieldLabel: 'nome_contaorcamentaria', // Exibe apenas o código
+        fieldValue: 'nome_contaorcamentaria', // Valor retornado ao selecionar
+        columns: [ // Colunas exibidas no lookup
+          { property: 'codigo_contaorcamentaria', label: 'Código' },
+          { property: 'nome_contaorcamentaria', label: 'Nome' },
+        ],
+      },
+      { property: 'cc', label: 'CC', required: true,
+        searchService: this.lookupServiceCentroDeCusto,
+        fieldLabel: 'codigo', // Nome da propriedade que será exibida no lookup
+        fieldValue: 'codigo', // Nome da propriedade que será usada como valor
+        columns: [ // Colunas exibidas no lookup
+          { property: 'codigo', label: 'Código' },
+          { property: 'descricao', label: 'Nome' },
+        ],
+      },
+      { property: 'dataP', label: 'Data', type: 'date', required: true },
+      { property: 'valor', label: 'Valor', type: 'number', required: true },
+    ];
+
   // Detalhes do orçamento
   public orcamentoFields: PoDynamicViewField[] = [
     { property: 'codigo_orcamento', label: 'Código', gridColumns: 6 },
@@ -217,8 +220,8 @@ export class OrcamentosComponent implements OnInit {
       label: 'Período',
       gridColumns: 6,
     },
-    { property: 'dt_inicio', label: 'Data Início', gridColumns: 6 },
-    { property: 'dt_fim', label: 'Data Fim', gridColumns: 6 },
+    { property: 'dt_inicio', label: 'Data Início', type: 'date', gridColumns: 6, format: 'dd/MM/yyyy' },
+    { property: 'dt_fim', label: 'Data Fim', type: 'date', gridColumns: 6, format: 'dd/MM/yyyy' },
     { property: 'numero_versao', label: 'Versão', gridColumns: 6 },
     { property: 'bloqueado', label: 'Bloqueado', gridColumns: 6 },
   ];
@@ -227,7 +230,19 @@ export class OrcamentosComponent implements OnInit {
   public editFields: PoDynamicFormField[] = [
     { property: 'codigo_orcamento', label: 'Código', required: true, disabled: true },
     { property: 'descricao_orcamento', label: 'Descrição', required: true },
-    { property: 'periodo', label: 'Período', required: true },
+    {
+      property: 'periodo',
+      label: 'Período',
+      disabled: true,
+      placeholder: 'Mensal ou Anual',
+      required: true,
+      type: 'string',
+      options: [
+        { label: 'Mensal', value: 'Mensal' },
+        { label: 'Anual', value: 'Anual' },
+      ],
+      forceOptionsComponentType: ForceOptionComponentEnum.select,
+    },
     {
       property: 'dt_inicio',
       label: 'Data Início',
@@ -256,6 +271,13 @@ export class OrcamentosComponent implements OnInit {
   ];
 
   public itemColumns: PoTableColumn[] = [
+    
+    { property: 'item', label: 'Item', type: 'string' },
+    { property: 'orcamento', label: 'Orçamento', type: 'string' },
+    { property: 'conta', label: 'Conta', type: 'string' },
+    { property: 'cc', label: 'CC', type: 'string' },
+    { property: 'dataP', label: 'Período', type: 'date' },
+    { property: 'valor', label: 'Valor', type: 'number' },
     {
       property: 'actions',
       label: 'Ações',
@@ -276,12 +298,6 @@ export class OrcamentosComponent implements OnInit {
       ],
       visible: this.isEditMode, // A coluna de ações só será visível no modo de edição
     },
-    { property: 'item', label: 'Item', type: 'string' },
-    { property: 'orcamento', label: 'Orçamento', type: 'string' },
-    { property: 'conta', label: 'Conta', type: 'string' },
-    { property: 'cc', label: 'CC', type: 'string' },
-    { property: 'dataP', label: 'Período', type: 'date' },
-    { property: 'valor', label: 'Valor', type: 'number' },
   ];
 
   // Chamar o método para atualizar a visibilidade das colunas ao abrir os modais
@@ -290,11 +306,11 @@ export class OrcamentosComponent implements OnInit {
     this.updateColumnsVisibility();
     this.descricao_orcamento = conta.descricao_orcamento;
     this.orcamentoData = conta;
-
+  
     if (!this.orcamentoData.itens) {
       this.orcamentoData.itens = [];
     }
-
+  
     this.userModalEl.open();
   }
 
