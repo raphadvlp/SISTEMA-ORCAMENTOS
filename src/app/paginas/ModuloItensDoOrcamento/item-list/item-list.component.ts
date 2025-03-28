@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import {
@@ -12,7 +12,7 @@ import {
 } from '@po-ui/ng-components';
 import { environment } from '../../../../environments/environment';
 
-import { BrCurrencyPipe } from './br-currency.pipe';
+// import { BrCurrencyPipe } from './br-currency.pipe';
 import { NovoorcamentoComponent } from '@app/paginas/ModuloOrcamento/novoorcamento/novoorcamento.component';
 
 @Component({
@@ -137,8 +137,8 @@ export class ItemListComponent implements OnInit {
       // placeholder: '0,00',
       clean: true,
       noAutocomplete: true,
-      decimalsLength: 2, // Duas casas decimais
-      thousandMaxlength: 3, // Separador de milhar
+      // decimalsLength: 2, // Duas casas decimais
+      // thousandMaxlength: 3, // Separador de milhar
       icon: 'po-icon-money' // Ícone de moeda
     },
   ];
@@ -150,18 +150,22 @@ export class ItemListComponent implements OnInit {
     { property: 'conta', label: 'Conta Orçamentária' },
     { property: 'cc', label: 'Centro de Custo' },
     { property: 'dataP', label: 'Data', type: 'date', format: 'dd/MM/yyyy' },
-    { 
-      property: 'valor', 
-      label: 'Valor', 
-      type: 'number',
-      format: '1.2-2', // Formato Angular - mínimo 1 dígito antes e 2 depois da vírgula
-      // pipe: {
+    {
+      property: 'valor',
+      label: 'Valor',
+      type: 'currency',
+      format: 'BRL',
+      pipe: 'currency:BRL:1.0-2', // 1 dígito antes e 2 depois da vírgula
+    }
+    
+  ];
+
+        // pipe: {
       //   property: 'valor',
+      //   type: 'currency',
       //   format: 'BRL' // Formato de moeda brasileira (R$)
       // }
-      pipe: new BrCurrencyPipe() // Usa o pipe programaticamente
-    },
-  ];
+      // pipe: new BrCurrencyPipe() // Usa o pipe programaticamente
 
   // Ações da tabela
   actions = [
