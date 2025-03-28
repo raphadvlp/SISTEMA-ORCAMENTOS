@@ -24,6 +24,10 @@ export class NovousuarioComponent {
   private url: string = environment.url;
   private notify = inject(PoNotificationService);
 
+
+  // Define um valor inicial para o campo 'bloqueado'
+
+
   public fields: PoDynamicFormField[] = [
     // { property: 'id', label: 'ID', type: 'number', gridColumns: 12 },
     {
@@ -109,12 +113,13 @@ export class NovousuarioComponent {
     {
       property: 'blocked',
       label: 'Usuário Bloqueado',
-      type: 'string',
-      options: [
-        { label: 'Sim', value: 'sim' },
-        { label: 'Não', value: 'nao' },
-      ],
+      placeholder: 'Sim ou Não',
+      // type: 'string',
       required: true,
+      options: [
+        { label: 'Não', value: 'nao' },
+        { label: 'Sim', value: 'sim' },
+      ],
       fieldLabel: 'label',
       fieldValue: 'value',
       forceOptionsComponentType: ForceOptionComponentEnum.select,
