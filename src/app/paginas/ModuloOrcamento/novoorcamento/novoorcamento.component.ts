@@ -155,7 +155,7 @@ export class NovoorcamentoComponent implements OnInit {
     this.formOrcamento.periodo = 'Mensal';
 
     // Define um valor inicial para o campo 'bloqueado'
-    this.formOrcamento.bloqueado = 'Nao';
+    this.formOrcamento.bloqueado = 'nao';
     
     // Formata a data inicial corretamente para o PO UI
     const today = new Date();
