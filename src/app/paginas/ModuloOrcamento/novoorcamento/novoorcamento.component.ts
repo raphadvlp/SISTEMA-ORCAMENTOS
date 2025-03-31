@@ -327,13 +327,13 @@ export class NovoorcamentoComponent implements OnInit {
       //   return;
       // }
   
-      // if (endDate && startDate > endDate) {
-      //   this.notify.error({
-      //     duration: 3000,
-      //     message: 'A data final não pode ser anterior à data inicial'
-      //   });
-      //   return;
-      // }
+      if (endDate && startDate > endDate) {
+        this.notify.error({
+          duration: 3000,
+          message: 'A data final não pode ser anterior à data inicial'
+        });
+        return;
+      }
     }
     
     // Validação para período anual
@@ -360,13 +360,13 @@ export class NovoorcamentoComponent implements OnInit {
       //   return;
       // }
   
-      // if (endDate && startDate > endDate) {
-      //   this.notify.error({
-      //     duration: 3000,
-      //     message: 'A data final não pode ser anterior à data inicial'
-      //   });
-      //   return;
-      // }
+      if (endDate && startDate > endDate) {
+        this.notify.error({
+          duration: 3000,
+          message: 'A data final não pode ser anterior à data inicial'
+        });
+        return;
+      }
     }
 
     if (this.itemListComponent.items.length === 0) {

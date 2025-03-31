@@ -248,8 +248,9 @@ export class OrcamentosComponent implements OnInit {
       label: 'Data Início',
       type: 'date',
       required: true,
+      validate: this.validateDates.bind(this) // Adiciona validação
     },
-    { property: 'dt_fim', label: 'Data Final', type: 'date', required: true },
+    { property: 'dt_fim', label: 'Data Final', type: 'date', required: true, validate: this.validateDates.bind(this) }, // Adiciona validação,
     {
       property: 'numero_versao',
       label: 'Versão',
@@ -343,6 +344,22 @@ export class OrcamentosComponent implements OnInit {
     if (!this.orcamentoData.itens) return '';
     const item = this.orcamentoData.itens.find((i: any) => i.cc === codigo);
     return item ? item.ccDescription : ''; // Você precisará armazenar essa informação
+  }
+
+  // Método de validação das datas
+  private validateDates(property: string, value: any, formValue: any): string | null {
+    if (!formValue.dt_inicio || !formValue.dt_fim) {
+      return null; // Não valida se alguma das datas estiver vazia
+    }
+
+    const dataInicio = new Date(formValue.dt_inicio);
+    const dataFim = new Date(formValue.dt_fim);
+
+    if (dataFim < dataInicio) {
+      return 'A data final não pode ser anterior à data de início';
+    }
+
+    return null; // Retorna null quando a validação é bem-sucedida
   }
 
   // Abrir modal para editar item
@@ -455,6 +472,16 @@ export class OrcamentosComponent implements OnInit {
 
   // Salvar edição do orçamento
   public saveEdit() {
+
+    // Validação das datas
+    const dataInicio = new Date(this.editData.dt_inicio);
+    const dataFim = new Date(this.editData.dt_fim);
+
+    if (dataFim < dataInicio) {
+      this.notify.error('A data final não pode ser anterior à data de início!');
+      return; // Interrompe a execução do método
+    }
+
     // Incrementa a versão do orçamento em +1
     this.editData.numero_versao = (
       parseInt(this.editData.numero_versao, 10) + 1
