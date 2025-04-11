@@ -15,8 +15,8 @@ import { PoPageLoginComponent, PoPageLoginCustomField, PoPageLoginLiterals, PoPa
 export class LoginComponent {
   public titleSystem: string = 'Gestão Orçamentária';
   public textLoading: string = 'Realizando login...';
-  public logoLogin: string = 'logo.png';
-  public backgroundLogin: string = 'bglogin.png';
+  // public logoLogin: string = 'logo.png';
+  // public backgroundLogin: string = 'bglogin.png';
 
   public isHiddenLoading: boolean = true;
 

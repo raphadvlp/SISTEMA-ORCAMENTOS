@@ -1,0 +1,66 @@
+<po-page-default 
+  p-title="Novo Grupo"
+  [p-breadcrumb]="{
+    items: [
+      { label: 'Home', link: '/home' },
+      { label: 'Grupos de Usuários', link: '/grupos-de-usuarios' },
+      { label: 'Novo Usuários' }
+    ]
+  }"
+>
+  <div class="po-container po-p-3">
+    
+    <div class="po-row">
+      <div class="po-md-1">
+        <po-input
+          name="id"
+          [(ngModel)]="id"
+          p-label="Código"
+          p-disabled="true">
+        </po-input>
+      </div>
+      <div class="po-md-4">
+        <po-input
+          name="nomeGrupo"
+          [(ngModel)]="nomeGrupo"
+          p-label="Nome do Grupo"
+          p-placeholder="Digite o nome do grupo"
+          p-required
+          p-focus
+          [p-show-required]="true"
+          >
+        </po-input>
+      </div>
+    </div>
+
+    <!-- Área dos botões -->
+    <div class="po-row po-pt-3">
+      <div class="po-md-12">
+        <po-button 
+          p-label="Cancelar" 
+          type="default"
+          (p-click)="cancelar()"
+          class="po-mr-2"
+          >
+        </po-button>
+
+        <po-tooltip 
+          p-position="right" 
+          p-tooltip="Preencha o campo Nome do Grupo"
+        >
+          <po-button 
+            p-label="Salvar" 
+            type="primary"
+            [p-disabled]="!nomeGrupo || carregandoId"
+            [p-loading]="salvando"
+            (p-click)="salvarGrupo()"
+          >
+          </po-button>
+        </po-tooltip>
+
+      </div>
+    </div>
+
+    <po-loading *ngIf="carregandoId"></po-loading>
+  </div>
+</po-page-default>

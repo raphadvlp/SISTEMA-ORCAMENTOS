@@ -1,0 +1,26 @@
+<po-page-dynamic-table
+  #pageCadastroEmpresa
+  p-title="Empresa"
+  [p-service-api]="url"
+  [p-fields]="fields"
+  [p-table-custom-actions]="tableActions"
+  [p-actions]="actions"
+/>
+
+<!-- Modal de detalhes -->
+<po-modal #cadastroEmpresaDetailModal [p-title]="descricao">
+  <po-dynamic-view
+    [p-fields]="cadastroEmpresaFields"
+    [p-value]="cadastroEmpresaData"
+  />
+</po-modal>
+
+<!-- Modal de edição -->
+<po-modal #editModal p-title="Editar Empresa">
+  <po-dynamic-form
+    [p-fields]="editFields"
+    [p-value]="editData"
+    (p-submit)="saveEdit()"
+  ></po-dynamic-form>
+  <po-button p-label="Salvar" (p-click)="saveEdit()"></po-button>
+</po-modal>

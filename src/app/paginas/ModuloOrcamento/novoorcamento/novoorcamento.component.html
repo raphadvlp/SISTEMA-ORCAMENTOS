@@ -16,7 +16,9 @@
     (p-change)="onFormChange($event)"
   ></po-dynamic-form>
   <po-divider p-border-width="small" p-label="Itens"> </po-divider>
-  <app-item-list></app-item-list>
+  <app-item-list
+    [periodo]="formOrcamento.periodo" 
+  ></app-item-list>
 
   <div class="po-row">
     <po-button
@@ -26,3 +28,8 @@
     />
   </div>
 </po-page-default>
+
+<!--   parametros do app-item-list:
+     [dataInicioOrcamento]="getDataInicioString()"
+    [dataFimOrcamento]="getDataFimString()"
+ -->

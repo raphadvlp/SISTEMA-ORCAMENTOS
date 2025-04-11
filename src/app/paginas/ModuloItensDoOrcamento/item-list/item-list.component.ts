@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, inject, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -9,6 +9,7 @@ import {
   PoButtonModule,
   PoTableModule,
   PoFieldModule,
+  PoNotificationService,
 } from '@po-ui/ng-components';
 import { environment } from '../../../../environments/environment';
 
@@ -36,6 +37,8 @@ export class ItemListComponent implements OnInit {
 
   lookupServiceContaOrcamentaria = `${environment.url}/api/mock/contaorcamentaria`;
   lookupServiceCentroDeCusto = `${environment.url}/api/mock/centrodecusto`;
+
+    private notify = inject(PoNotificationService);
   
   // Valores do formulário
   formValues: any = {};
@@ -72,22 +75,23 @@ export class ItemListComponent implements OnInit {
       // visible: false, // Oculta o campo no formulário
       noAutocomplete: true,
     },
-    {
-      property: 'orcamento',
-      label: 'Orçamento',
-      type: 'string',
-      required: true,
-      gridColumns: 2,
-      placeholder: 'Código Orçamento',
-      noAutocomplete: true,
-      disabled: false,
-    },
+    // {
+    //   property: 'orcamento',
+    //   label: 'Orçamento',
+    //   type: 'string',
+    //   required: true,
+    //   gridColumns: 2,
+    //   placeholder: 'Código Orçamento',
+    //   noAutocomplete: true,
+    //   disabled: false,
+    //   visible: false,
+    // },
     {
       property: 'conta',
       label: 'Conta Orçamentária',
       type: 'string',
       required: true,
-      gridColumns: 2,
+      gridColumns: 4,
       disabled: false,
       searchService: this.lookupServiceContaOrcamentaria,
       fieldLabel: 'nome_contaorcamentaria', // Exibe apenas o código
@@ -146,7 +150,7 @@ export class ItemListComponent implements OnInit {
   // Colunas da tabela
   columns = [
     { property: 'item', label: 'Item' },
-    { property: 'orcamento', label: 'Orçamento' },
+    // { property: 'orcamento', label: 'Orçamento' },
     { property: 'conta', label: 'Conta Orçamentária' },
     { property: 'cc', label: 'Centro de Custo' },
     { property: 'dataP', label: 'Data', type: 'date', format: 'dd/MM/yyyy' },
@@ -206,22 +210,25 @@ export class ItemListComponent implements OnInit {
     const deveDesabilitar = this.periodo === 'Anual';
     //&& this.items.length >= 1;
 
-    this.fields = this.fields.map(field => {
-      if (camposParaDesabilitar.includes(field.property)) {
-        return {
-          ...field,
-          disabled: deveDesabilitar
-        };
-      }
-      return field;
-    });
+    // this.fields = this.fields.map(field => {
+    //   if (camposParaDesabilitar.includes(field.property)) {
+    //     return {
+    //       ...field,
+    //       disabled: deveDesabilitar
+    //     };
+    //   }
+    //   return field;
+    // });
   }
 
   // Adicionar ou salvar item
   // AdicionarOuSalvarItem para chamando atualizarEstadoCampos
   adicionarOuSalvarItem() {
     if (this.periodo === 'Anual' && this.items.length >= 1 && this.editingIndex === null) {
-      alert('Período anual permite apenas 1 item. Não é possível adicionar mais itens.');
+      this.notify.warning({
+        duration: 3000,
+        message: 'Período anual permite apenas 1 item.'
+      });
       console.log('Período anual permite apenas 1 item. Não é possível adicionar mais itens.');
       return;
     }

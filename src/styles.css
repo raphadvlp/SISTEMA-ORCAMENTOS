@@ -196,3 +196,7 @@ po-table .po-table-group-row:nth-child(odd):hover {
   right: 0;
   top: 24px;
 }
+
+.po-table-actions {
+  margin-bottom: 10px;
+}

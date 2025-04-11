@@ -1,0 +1,154 @@
+  <po-page-default 
+    p-title="Grupos de Usuários" 
+  >
+    <div class="po-mb-3">
+      <po-button 
+        p-label="Novo Grupo" 
+        type="primary" 
+        [routerLink]="['../novogrupo']">
+      </po-button>
+    </div>
+  
+    <po-loading *ngIf="loading"></po-loading>
+  
+    <div *ngIf="errorMessage" class="po-notification po-notification-error">
+      {{ errorMessage }}
+    </div>
+  
+    <po-accordion *ngIf="!loading && !errorMessage">
+      <po-accordion-item 
+        *ngFor="let grupo of grupos" 
+        [p-label]="grupo.name + ' (' + grupo.usuarios.length + ')'">
+
+        <div class="po-mb-2">
+            <po-button 
+              p-label="Editar Grupo" 
+              p-icon="po-icon-edit" 
+              p-small
+              (p-click)="editarGrupo(grupo)">
+            </po-button>
+
+            <po-button 
+            p-label="Excluir Grupo" 
+            p-icon="po-icon-delete" 
+            type="danger"
+            p-small
+            [p-disabled]="excluindo"
+            (p-click)="confirmarExclusao(grupo)">
+          </po-button>
+          </div>
+        
+        <div *ngIf="grupo.usuarios.length > 0; else semUsuarios" >
+          <po-table
+            [p-columns]="colunasTabelaUsuarios"
+            [p-items]="grupo.usuarios"
+            p-no-data="Nenhum usuário encontrado"
+            p-hide-columns-manager="true"
+            p-hide-table-search="false"
+            >
+          </po-table>
+        </div>
+        
+        <ng-template #semUsuarios>
+          <div class="po-p-3 po-text-center">
+            Nenhum usuário neste grupo
+          </div>
+        </ng-template>
+      </po-accordion-item>
+    </po-accordion>
+    <!-- <pre>{{ grupos | json }}</pre> -->
+
+    <!-- Modal de Edição -->
+  <po-modal #modalEdicao p-title="Editar Grupo">
+    <div class="po-row">
+      <div class="po-md-12">
+        <po-input 
+          [(ngModel)]="nomeEditado" 
+          p-label="Nome do Grupo">
+        </po-input>
+        <po-lookup
+        [(ngModel)]="novoUsuario.username" 
+        name="novoUsuario"
+        p-field-label="username"
+        [p-columns]="colunasLookupUsuario"
+        (poSelect)="preencherDadosUsuario($event)"
+        p-field-value="username"
+        p-filter-service="http://localhost:8000/api/mock/usuario"
+        p-label="Buscar Usuário"
+        [p-placeholder]="'Busque um usuário'"
+      >
+      </po-lookup>
+      <div class="po-md-2 po-pt-4">
+        <po-button 
+          p-label="Adicionar" 
+          type="primary"
+          (p-click)="adicionarUsuario()">
+        </po-button>
+      </div>
+      </div>
+    </div>
+
+    <!-- <po-divider p-label="Adicionar Novo Usuário"></po-divider>
+
+    <div class="po-row">
+      <div class="po-md-5">
+        <po-lookup
+          [(ngModel)]="novoUsuario.username" 
+          name="novoUsuario"
+          p-field-label="username"
+          [p-columns]="colunasLookupUsuario"
+          (poSelect)="preencherDadosUsuario($event)"
+          p-field-value="username"
+          p-filter-service="http://localhost:8000/api/mock/usuario"
+          p-label="Buscar Usuário"
+          [p-placeholder]="'Busque um usuário'"
+        >
+        </po-lookup>
+      </div>
+      <div class="po-md-2 po-pt-4">
+        <po-button 
+          p-label="Adicionar" 
+          type="primary"
+          (p-click)="adicionarUsuario()">
+        </po-button>
+      </div>
+    </div> -->
+
+    <po-divider p-label="Usuários do Grupo"></po-divider>
+
+    <po-container>
+        <div class="po-row po-font-text" *ngFor="let usuario of usuariosEditados; let i = index">
+          <div class="po-md-5 po-pt-2 userListEdit">
+            {{usuario.username}}
+          </div>
+          <div class="po-md-2 btn-removeUser">
+            <po-button 
+              p-icon="po-icon-delete" 
+              type="danger"
+              p-small
+              (p-click)="removerUsuario(i)"
+              p-tooltip="Remover usuário"
+              p-tooltip-position="right">
+            </po-button>
+          </div>
+        </div>
+    </po-container>
+
+    <po-modal-footer>
+      <po-button 
+        p-label="Cancelar" 
+        type="default" 
+        (p-click)="modalEdicao.close()">
+      </po-button>
+      
+      <po-button 
+        p-label="Salvar" 
+        p-kind="primary"
+        class="po-ml-2"
+        [p-loading]="salvando"
+        [p-disabled]="!nomeEditado || salvando"
+        (p-click)="salvarEdicao()">
+      </po-button>
+    </po-modal-footer>
+  </po-modal>
+  </po-page-default>

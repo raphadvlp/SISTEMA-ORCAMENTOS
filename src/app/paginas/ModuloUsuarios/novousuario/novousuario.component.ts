@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   ForceOptionComponentEnum,
@@ -17,16 +17,15 @@ import { environment } from '../../../../environments/environment';
   templateUrl: './novousuario.component.html',
   styleUrl: './novousuario.component.css',
 })
-export class NovousuarioComponent {
+export class NovousuarioComponent implements OnInit {
 
   private http = inject(HttpClient);
   private route = inject(Router);
   private url: string = environment.url;
   private notify = inject(PoNotificationService);
 
-
-  // Define um valor inicial para o campo 'bloqueado'
-
+  // Valores do formulário
+  public formNovoUsuario: any = {};
 
   public fields: PoDynamicFormField[] = [
     // { property: 'id', label: 'ID', type: 'number', gridColumns: 12 },
@@ -39,13 +38,13 @@ export class NovousuarioComponent {
       gridColumns: 6,
       noAutocomplete: true,
       clean: true,
+      showRequired: true,
     },
     {
       property: 'email',
       label: 'E-mail',
       type: 'string',
       placeholder: 'Digite o e-mail',
-      required: true,
       gridColumns: 6,
       noAutocomplete: true,
       clean: true,
@@ -55,41 +54,41 @@ export class NovousuarioComponent {
       label: 'CPF',
       type: 'string',
       placeholder: 'Digite o CPF',
-      required: true,
-      gridColumns: 6,
+      gridColumns: 3,
       noAutocomplete: true,
       clean: true,
       // help: 'Ex: 12345678900 sem pontos e traço',
       mask: '999.999.999-99',
     },
-    {
-      property: 'department',
-      label: 'Departamento',
-      options: [
-        { label: 'Financeiro', value: 'Financeiro' },
-        { label: 'Contabilidade', value: 'Contabilidade' },
-        { label: 'Fiscal', value: 'Fiscal' },
-        { label: 'Comercial', value: 'Comercial' },
-        { label: 'Marketing', value: 'Marketing' },
-        { label: 'Operacional', value: 'Operacional' },
-        { label: 'Controladoria', value: 'Controladoria' },
-        { label: 'Loistica', value: 'Logistica' },
-        { label: 'Departamento Pessoal', value: 'DP' },
-        { label: 'Recurso Humano', value: 'RH' },
-        { label: 'Tecologia da Informação', value: 'TI' },
-      ],
-      forceOptionsComponentType: ForceOptionComponentEnum.select,
-      gridColumns: 6,
-    },
+    // {
+    //   property: 'department',
+    //   label: 'Departamento',
+    //   options: [
+    //     { label: 'Financeiro', value: 'Financeiro' },
+    //     { label: 'Contabilidade', value: 'Contabilidade' },
+    //     { label: 'Fiscal', value: 'Fiscal' },
+    //     { label: 'Comercial', value: 'Comercial' },
+    //     { label: 'Marketing', value: 'Marketing' },
+    //     { label: 'Operacional', value: 'Operacional' },
+    //     { label: 'Controladoria', value: 'Controladoria' },
+    //     { label: 'Loistica', value: 'Logistica' },
+    //     { label: 'Departamento Pessoal', value: 'DP' },
+    //     { label: 'Recurso Humano', value: 'RH' },
+    //     { label: 'Tecologia da Informação', value: 'TI' },
+    //   ],
+    //   forceOptionsComponentType: ForceOptionComponentEnum.select,
+    //   gridColumns: 6,
+    // },
     {
       property: 'username',
       label: 'Usuário',
       type: 'string',
       placeholder: 'Digite o usuário',
       required: true,
-      gridColumns: 6,
+      gridColumns: 3,
       noAutocomplete: true,
       clean: true,
+      showRequired: true,
     },
     {
       property: 'password',
@@ -97,8 +96,9 @@ export class NovousuarioComponent {
       type: 'string',
       placeholder: 'Digite a senha',
       required: true,
-      gridColumns: 6,
+      gridColumns: 3,
       secret: true,
+      showRequired: true,
     },
     {
       property: 'confirm_password',
@@ -106,13 +106,14 @@ export class NovousuarioComponent {
       type: 'string',
       placeholder: 'Confirme a senha',
       required: true,
-      gridColumns: 6,
+      gridColumns: 3,
       secret: true,
+      showRequired: true,
     },
 
     {
       property: 'blocked',
-      label: 'Usuário Bloqueado',
+      label: 'Bloqueado',
       placeholder: 'Sim ou Não',
       // type: 'string',
       required: true,
@@ -123,8 +124,15 @@ export class NovousuarioComponent {
       fieldLabel: 'label',
       fieldValue: 'value',
       forceOptionsComponentType: ForceOptionComponentEnum.select,
+      gridColumns: 3,
+      showRequired: true,
     },
   ];
+
+  ngOnInit() {
+    // Define um valor inicial para o campo 'bloqueado'
+    this.formNovoUsuario.blocked = 'nao';
+  }
 
   public confirmarForm(form: any) {
     this.http.post<any>(`${this.url}/api/mock/usuario`, form).subscribe({

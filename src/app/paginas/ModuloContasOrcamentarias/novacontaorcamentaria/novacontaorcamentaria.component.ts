@@ -9,6 +9,7 @@ import {
   PoNotificationService,
 } from '@po-ui/ng-components';
 import { environment } from '../../../../environments/environment';
+import { Contaorcamentaria } from '@app/class/contaorcamentaria';
 
 @Component({
   selector: 'app-novacontaorcamentaria',
@@ -84,7 +85,7 @@ export class NovacontaorcamentariaComponent {
       label: 'Natureza',
       type: 'number',
       placeholder: 'Código Natureza',
-      required: true,
+      // required: true,
       gridColumns: 2,
       clean: true,
       noAutocomplete: true,
@@ -157,7 +158,7 @@ export class NovacontaorcamentariaComponent {
     }
 
     this.http
-      .post<any>(`${this.url}/api/mock/contaorcamentaria`, form)
+      .post<Contaorcamentaria>(`${this.url}/api/mock/contaorcamentaria`, form)
       .subscribe({
         next: (value) =>
           this.notify.success({

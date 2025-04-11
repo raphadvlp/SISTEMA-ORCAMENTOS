@@ -1,0 +1,21 @@
+<po-page-default p-title="Nova Empresa" 
+[p-breadcrumb]="{
+  items: [
+    { label: 'Home', link: '/home' },
+    { label: 'Empresas', link: '/empresas' },
+    { label: 'Nova Empresa', link: '/novaempresa' }
+  ]
+}">
+  <po-dynamic-form
+    [p-fields]="fields"
+    [p-value]="formNovaEmpresa"
+    
+  ></po-dynamic-form>
+  <div class="po-row">
+    <po-button
+      class="po-md-3"
+      p-label="Cadastrar"
+      (p-click)="confirmarForm(formNovaEmpresa)"
+    ></po-button>
+  </div>
+</po-page-default>

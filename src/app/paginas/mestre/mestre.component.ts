@@ -29,6 +29,21 @@ export class MestreComponent {
       icon: 'po-icon an an-house-line',
     },
     {
+      label: 'Cadastro',
+      shortLabel: 'cadastro',
+      link: '/cadastro',
+      action: this.clickItemMenu.bind(this),
+      icon: 'po-icon an an-city',
+      subItems: [
+        {
+          label: 'Empresa',
+          shortLabel: 'empresa',
+          link: '/empresas',
+          action: this.clickItemMenu.bind(this),
+        },
+      ],
+    },
+    {
       label: 'Financeiro',
       shortLabel: 'financeiro',
       link: '/financeiro',
@@ -65,6 +80,18 @@ export class MestreComponent {
           label: 'Usuários',
           shortLabel: 'usuarios',
           link: '/usuarios',
+          action: this.clickItemMenu.bind(this),
+        },
+        {
+          label: 'Grupos de Usuários',
+          shortLabel: 'grupos-de-usuarios',
+          link: '/grupos-de-usuarios',
+          action: this.clickItemMenu.bind(this),
+        },
+        {
+          label: 'Permissoes',
+          shortLabel: 'permissoes',
+          link: '/permissoes',
           action: this.clickItemMenu.bind(this),
         },
       ],

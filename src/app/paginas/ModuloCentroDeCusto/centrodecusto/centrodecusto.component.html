@@ -22,5 +22,11 @@
     [p-value]="editData"
     (p-submit)="saveEdit()"
   ></po-dynamic-form>
-  <po-button p-label="Salvar" (p-click)="saveEdit()"></po-button>
+  <!-- <po-button p-label="Salvar" (p-click)="saveEdit()"></po-button> -->
+  <po-modal-footer>
+    <po-button 
+      p-label="Salvar" 
+      (p-click)="saveEdit()">
+    </po-button>
+  </po-modal-footer>
 </po-modal>

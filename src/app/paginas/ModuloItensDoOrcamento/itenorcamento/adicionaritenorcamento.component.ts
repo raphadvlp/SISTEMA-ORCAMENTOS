@@ -48,16 +48,16 @@ export class AdicionaritenorcamentoComponent {
       disabled: true,
       noAutocomplete: true,
     },
-    {
-      property: 'orcamento',
-      label: 'Orçamento',
-      type: 'string',
-      required: true,
-      gridColumns: 6, // Ocupa 6 colunas (metade da linha)
-      gridSmColumns: 12, // Em telas pequenas, ocupa 12 colunas (linha inteira)
-      placeholder: 'Código Orçamento',
-      noAutocomplete: true,
-    },
+    // {
+    //   property: 'orcamento',
+    //   label: 'Orçamento',
+    //   type: 'string',
+    //   required: true,
+    //   gridColumns: 6, // Ocupa 6 colunas (metade da linha)
+    //   gridSmColumns: 12, // Em telas pequenas, ocupa 12 colunas (linha inteira)
+    //   placeholder: 'Código Orçamento',
+    //   noAutocomplete: true,
+    // },
     {
       property: 'conta',
       label: 'Conta Orçamentária',

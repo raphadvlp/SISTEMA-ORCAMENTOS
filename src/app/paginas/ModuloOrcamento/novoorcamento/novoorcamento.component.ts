@@ -23,6 +23,8 @@ export class NovoorcamentoComponent implements OnInit {
   private url: string = environment.url;
   private notify = inject(PoNotificationService);
 
+  lookupServiceEmpresas = `${environment.url}/api/mock/empresas`;
+
   // Valores do formulário
   public formOrcamento: any = {};
 
@@ -54,12 +56,31 @@ export class NovoorcamentoComponent implements OnInit {
       maxLength: 10,
     },
     {
+      property: 'empresa',
+      label: 'Empresa',
+      type: 'string',
+      placeholder: 'Selecione uma Empresa',
+      required: true,
+      gridColumns: 2,
+      clean: true,
+      maxLength: 3,
+      searchService: this.lookupServiceEmpresas,
+      fieldLabel: 'codigo', // Exibe apenas o código
+      fieldValue: 'codigo', // Valor retornado ao selecionar
+      columns: [ // Colunas exibidas no lookup
+        { property: 'codigo', label: 'Código' },
+        { property: 'razao_social', label: 'Razão Social' },
+        { property: 'nome_fantasia', label: 'Nome Fanasia' },
+      ],
+      noAutocomplete: true,
+    },
+    {
       property: 'descricao_orcamento',
       label: 'Descrição',
       type: 'string',
       placeholder: 'Digite a descrição do orçamento',
       required: true,
-      gridColumns: 10,
+      gridColumns: 8,
       clean: true,
       noAutocomplete: true,
     },
@@ -287,6 +308,48 @@ export class NovoorcamentoComponent implements OnInit {
   
     // Log para depuração
     console.log('Itens atualizados:', this.itemListComponent.items);
+  }
+
+  // Método para formatar datas corretamente
+  private formatDate(date: string | Date): string {
+    if (!date) return '';
+    
+    if (typeof date === 'string') {
+      // Se já está no formato dd/mm/yyyy, retorna direto
+      if (date.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+        return date;
+      }
+      // Se for ISO string (yyyy-mm-dd), converte
+      if (date.match(/^\d{4}-\d{2}-\d{2}/)) {
+        const [year, month, day] = date.split('-');
+        return `${day}/${month}/${year}`;
+      }
+    }
+    
+    // Se for objeto Date
+    if (date instanceof Date) {
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
+    
+    return '';
+  }
+
+ // Métodos para obter as datas formatadas
+getDataInicioString(): string {
+  return this.formatDate(this.formOrcamento.dt_inicio);
+}
+
+getDataFimString(): string {
+  return this.formatDate(this.formOrcamento.dt_fim);
+}
+
+  // Método para converter string dd/mm/yyyy para Date (apenas para validação interna)
+  private parseDate(dateString: string): Date {
+    const [day, month, year] = dateString.split('/').map(Number);
+    return new Date(year, month - 1, day);
   }
 
   //   // Método para obter a data mínima (primeiro dia do mês atual)

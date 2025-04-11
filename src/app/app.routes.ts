@@ -13,6 +13,11 @@ import { CentrodecustoComponent } from '@app/paginas/ModuloCentroDeCusto/centrod
 import { NovocentrodecustoComponent } from '@app/paginas/ModuloCentroDeCusto/novocentrodecusto/novocentrodecusto.component';
 import { LoginComponent } from './paginas/ModuloLogin/login/login.component';
 import { authGuard } from './auth.guard';
+import { NovogrupoComponent } from './paginas/ModuloGruposUsuarios/novogrupo/novogrupo.component';
+import { GruposDeUsuariosComponent } from './paginas/ModuloGruposUsuarios/grupos-de-usuarios/grupos-de-usuarios.component';
+import { PermissoesComponent } from './paginas/ModuloGruposUsuarios/permissoes/permissoes.component';
+import { EmpresasComponent } from './paginas/ModuloCadastro/empresas/empresas.component';
+import { NovaempresaComponent } from './paginas/ModuloCadastro/novaempresa/novaempresa.component';
 
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -33,6 +38,11 @@ export const routes: Routes = [
       { path: 'item-list', component: ItemListComponent },
       { path: 'centrodecusto', component: CentrodecustoComponent },
       { path: 'novocentrodecusto', component: NovocentrodecustoComponent },
+      { path: 'novogrupo', component: NovogrupoComponent },
+      { path: 'grupos-de-usuarios', component: GruposDeUsuariosComponent },
+      { path: 'permissoes', component: PermissoesComponent },
+      { path: 'empresas', component: EmpresasComponent },
+      { path: 'novaempresa', component: NovaempresaComponent },
     ],
     canActivate: [authGuard],
   },

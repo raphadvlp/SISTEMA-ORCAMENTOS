@@ -44,7 +44,13 @@
     p-label="Adicionar Item"
     (p-click)="openAddItemModal()"
   ></po-button>
-  <po-button class="btn-salvar-orcamento btn-edt" p-label="Salvar Orçamento" (p-click)="saveEdit()"></po-button>
+  <!-- <po-button class="btn-salvar-orcamento btn-edt" p-label="Salvar Orçamento" (p-click)="saveEdit()"></po-button> -->
+  <po-modal-footer>
+    <po-button 
+      p-label="Salvar Orçamento" 
+      (p-click)="saveEdit()">
+    </po-button>
+  </po-modal-footer>
 </po-modal>
 
 <!-- Modal de edição de item -->
@@ -54,7 +60,13 @@
     [p-value]="itemEditData"
     (p-submit)="saveItemEdit()"
   ></po-dynamic-form>
-  <po-button p-label="Salvar" (p-click)="saveItemEdit()"></po-button>
+  <!-- <po-button p-label="Salvar" (p-click)="saveItemEdit()"></po-button> -->
+  <po-modal-footer>
+    <po-button 
+      p-label="Salvar" 
+      (p-click)="saveItemEdit()">
+    </po-button>
+  </po-modal-footer>
 </po-modal>
 
 <!-- Modal para adicionar novo item -->
