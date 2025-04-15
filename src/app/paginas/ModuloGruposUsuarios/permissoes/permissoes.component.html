@@ -1,3 +1,83 @@
-<po-page-default>
-    <h1>PERMISSÕES</h1>
+<po-page-default 
+p-title="Gerenciar Permissões de Grupos"
+[p-breadcrumb]="{
+    items: [
+      { label: 'Home', link: '/home' },
+      { label: 'Grupos de Usuários', link: '/grupos-de-usuarios' },
+      { label: 'Permissões Grupos de Usuários' }
+    ]
+  }"
+>
+  <div class="po-row">
+    <!-- Container para selecionar o grupo -->
+    <div class="po-lg-4 po-md-12 po-sm-12">
+      <po-container p-title="Selecionar Grupo">
+        <po-lookup
+          name="grupo"
+          p-label="Grupo de Usuários"
+          [p-placeholder]="'Selecione um grupo'"
+          [p-field-label]="'name'"
+          [p-field-value]="'id'"
+          [p-filter-service]="urlGrupos"
+          [p-filter-params]="{ dataPath: 'data' }"
+          (p-change)="onGrupoSelecionado($event)">
+        </po-lookup>
+      </po-container>
+    </div>
+
+    <!-- Container para configurar permissões -->
+    <div class="po-lg-8 po-md-12 po-sm-12">
+      <po-container p-title="Configurar Permissões">
+        <div *ngIf="grupoSelecionado">
+          <p><strong>Grupo Selecionado:</strong> {{ grupoSelecionado.name }}</p>
+          <po-accordion>
+            <po-accordion-item *ngFor="let menu of permissoes" [p-label]="menu.menu">
+              <po-accordion>
+                <po-accordion-item *ngFor="let submenu of menu.submenus" [p-label]="submenu.submenu">
+                  <div class="po-row">
+                    <div class="po-md-3">
+                      <po-checkbox
+                        name="ler"
+                        p-label="Ler"
+                        [(ngModel)]="submenu.ler">
+                      </po-checkbox>
+                    </div>
+                    <div class="po-md-3">
+                      <po-checkbox
+                        name="criar"
+                        p-label="Criar"
+                        [(ngModel)]="submenu.criar">
+                      </po-checkbox>
+                    </div>
+                    <div class="po-md-3">
+                      <po-checkbox
+                        name="editar"
+                        p-label="Editar"
+                        [(ngModel)]="submenu.editar">
+                      </po-checkbox>
+                    </div>
+                    <div class="po-md-3">
+                      <po-checkbox
+                        name="excluir"
+                        p-label="Excluir"
+                        [(ngModel)]="submenu.excluir">
+                      </po-checkbox>
+                    </div>
+                  </div>
+                </po-accordion-item>
+              </po-accordion>
+            </po-accordion-item>
+          </po-accordion>
+          <po-button
+            p-label="Salvar Permissões"
+            type="primary"
+            (p-click)="salvarPermissoes()">
+          </po-button>
+        </div>
+        <div *ngIf="!grupoSelecionado">
+          <p>Selecione um grupo para configurar as permissões.</p>
+        </div>
+      </po-container>
+    </div>
+  </div>
 </po-page-default>
