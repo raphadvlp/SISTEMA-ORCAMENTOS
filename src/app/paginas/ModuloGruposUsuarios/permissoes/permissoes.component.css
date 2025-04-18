@@ -1,7 +1,9 @@
 .po-row {
   display: flex;
   flex-wrap: nowrap;
-  gap: 16px;
+  /* gap: 16px; */
+  margin-left: 17px;
+  width: auto;
 }
 
 .po-md-3 {

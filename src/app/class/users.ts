@@ -8,6 +8,7 @@ export class Users {
   password: string = '';
   confirm_password: string = '';
   username: string = '';
+  mustChangePassword: boolean = false;
 
   constructor() {
     this.id_usuario = '';
@@ -19,5 +20,6 @@ export class Users {
     this.department = '';
     this.blocked = false;
     this.username = '';
+    this.mustChangePassword = false;
   }
 }

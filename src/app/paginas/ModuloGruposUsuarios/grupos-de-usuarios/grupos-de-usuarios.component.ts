@@ -13,7 +13,8 @@ import {
   PoModalModule,
   PoDialogService,
   PoTooltipModule,
-  PoContainerModule
+  PoContainerModule,
+  PoSearchModule
 } from '@po-ui/ng-components';
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -28,7 +29,6 @@ interface Usuario {
   username: string;
   email: string;
   department: string;
-  // Adicione esta propriedade para as ações
   actions?: string;
 }
 
@@ -73,7 +73,8 @@ interface GrupoPayload {
     FormsModule,
     PoTooltipModule,
     PoPageDynamicTableModule,
-    PoContainerModule
+    PoContainerModule,
+    PoSearchModule
   ],
   templateUrl: './grupos-de-usuarios.component.html',
   styleUrls: ['./grupos-de-usuarios.component.css']
@@ -115,9 +116,8 @@ export class GruposDeUsuariosComponent {
   }
 
 
-    // No seu componente TS
     colunasTabelaUsuarios = [
-      { property: 'username', label: 'Usuário' },
+      { property: 'username', label: 'Usuários' },
     ];
 
     loadUsuarios(grupo: any, params: any = {}) {
@@ -133,7 +133,7 @@ export class GruposDeUsuariosComponent {
   colunasLookupUsuario = [
     { property: 'username', label: 'Usuário' },
     { property: 'email', label: 'E-mail' },
-    { property: 'department', label: 'Departamento' }
+    // { property: 'department', label: 'Departamento' }
   ];
 
   carregarGrupos() {
@@ -188,14 +188,28 @@ export class GruposDeUsuariosComponent {
 
   adicionarUsuario() {
     if (this.novoUsuario.username) {
-      // Aqui você precisa garantir que está adicionando todos os campos necessários
+      // Verifica se o usuário já pertence ao grupo
+      const usuarioJaExiste = this.usuariosEditados.some(
+        (usuario) => usuario.username === this.novoUsuario.username
+      );
+
+      if (usuarioJaExiste) {
+        this.poNotification.warning('O usuário já pertence a este grupo.');
+        return;
+      }
+
+      // Adiciona o usuário ao grupo
       const usuarioCompleto = {
         username: this.novoUsuario.username,
         email: this.novoUsuario.email || '', // Adicione valor padrão se não existir
         department: this.novoUsuario.department || '' // Adicione valor padrão se não existir
       };
+
       this.usuariosEditados.push(usuarioCompleto);
-      this.novoUsuario = { username: '' }; // Reset apenas do username para nova busca
+      this.novoUsuario = { username: '' }; // Reseta o campo para nova busca
+      this.poNotification.success('Usuário adicionado ao grupo com sucesso!');
+    } else {
+      this.poNotification.warning('Selecione um usuário antes de adicionar.');
     }
   }
 

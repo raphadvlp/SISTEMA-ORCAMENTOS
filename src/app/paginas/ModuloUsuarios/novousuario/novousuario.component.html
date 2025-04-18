@@ -7,7 +7,13 @@
     ]
   }"
 >
-  <po-dynamic-form #formNovoUsuario [p-fields]="fields"></po-dynamic-form>
+  <po-dynamic-form 
+    #formNovoUsuario 
+    [p-fields]="fields"
+    [p-value]="userData"
+    (p-change)="onFormChange($event)">
+    >
+  </po-dynamic-form>
   <div class="po-row">
     <po-button
       class="po-md-3"

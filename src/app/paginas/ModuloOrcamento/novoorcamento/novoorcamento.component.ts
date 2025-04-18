@@ -23,7 +23,7 @@ export class NovoorcamentoComponent implements OnInit {
   private url: string = environment.url;
   private notify = inject(PoNotificationService);
 
-  lookupServiceEmpresas = `${environment.url}/api/mock/empresas`;
+  // lookupServiceEmpresas = `${environment.url}/api/mock/empresas`;
 
   // Valores do formulário
   public formOrcamento: any = {};
@@ -55,32 +55,32 @@ export class NovoorcamentoComponent implements OnInit {
       clean: true,
       maxLength: 10,
     },
-    {
-      property: 'empresa',
-      label: 'Empresa',
-      type: 'string',
-      placeholder: 'Selecione uma Empresa',
-      required: true,
-      gridColumns: 2,
-      clean: true,
-      maxLength: 3,
-      searchService: this.lookupServiceEmpresas,
-      fieldLabel: 'codigo', // Exibe apenas o código
-      fieldValue: 'codigo', // Valor retornado ao selecionar
-      columns: [ // Colunas exibidas no lookup
-        { property: 'codigo', label: 'Código' },
-        { property: 'razao_social', label: 'Razão Social' },
-        { property: 'nome_fantasia', label: 'Nome Fanasia' },
-      ],
-      noAutocomplete: true,
-    },
+    // {
+    //   property: 'empresa',
+    //   label: 'Empresa',
+    //   type: 'string',
+    //   placeholder: 'Selecione uma Empresa',
+    //   required: true,
+    //   gridColumns: 2,
+    //   clean: true,
+    //   maxLength: 3,
+    //   searchService: this.lookupServiceEmpresas,
+    //   fieldLabel: 'codigo', // Exibe apenas o código
+    //   fieldValue: 'codigo', // Valor retornado ao selecionar
+    //   columns: [ // Colunas exibidas no lookup
+    //     { property: 'codigo', label: 'Código' },
+    //     { property: 'razao_social', label: 'Razão Social' },
+    //     { property: 'nome_fantasia', label: 'Nome Fanasia' },
+    //   ],
+    //   noAutocomplete: true,
+    // },
     {
       property: 'descricao_orcamento',
       label: 'Descrição',
       type: 'string',
       placeholder: 'Digite a descrição do orçamento',
       required: true,
-      gridColumns: 8,
+      gridColumns: 10,
       clean: true,
       noAutocomplete: true,
     },

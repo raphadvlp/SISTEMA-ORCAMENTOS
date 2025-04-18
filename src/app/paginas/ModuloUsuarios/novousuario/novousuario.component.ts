@@ -127,25 +127,64 @@ export class NovousuarioComponent implements OnInit {
       gridColumns: 3,
       showRequired: true,
     },
+    { 
+      property: 'mustChangePassword',
+      label: 'Solicitar alteração de senha no próximo login',
+      type: 'boolean',
+      booleanFalse: 'Não',
+      booleanTrue: 'Sim',
+    }
   ];
 
+  public userData: any = {}; // Dados do formulário
+
+  onFormChange(changes: any) {
+    this.userData = { ...this.userData, ...changes }; // Atualiza os dados do formulário
+  }
   ngOnInit() {
     // Define um valor inicial para o campo 'bloqueado'
     this.formNovoUsuario.blocked = 'nao';
   }
 
   public confirmarForm(form: any) {
+    //Verifica se a senha e a confirmação de senha são iguais
+    if(form.password !== form.confirm_password) {
+      this.notify.error({
+        duration: 2000,
+        message: 'As senhas não conferem, precisam ser iguais',
+      });
+      return;
+    }
     this.http.post<any>(`${this.url}/api/mock/usuario`, form).subscribe({
       next: (value) =>
         this.notify.success({
           duration: 2000,
-          // message: `Usuário ${value.Nome} cadastrado com sucesso`,
-          message: `Usuário cadastrado com sucesso`,
+          message: `Usuário ${form.username} cadastrado com sucesso`,
+          // message: `Usuário cadastrado com sucesso`,
         }),
       error: (error) =>
         this.notify.error({ duration: 2000, message: error.mensagem }),
       complete: () => this.route.navigate(['/usuarios']),
     });
     this.route.navigate(['/usuarios']);
+  }
+
+  public saveUser() {
+    const payload = {
+      username: this.userData.username,
+      email: this.userData.email,
+      mustChangePassword: this.userData.mustChangePassword || false
+    };
+
+    this.http.post(`${environment.url}/api/users`, payload).subscribe({
+      next: () => {
+        this.notify.success('Usuário salvo com sucesso!');
+        this.route.navigate(['/usuarios']);
+      },
+      error: (error) => {
+        console.error('Erro ao salvar usuário:', error);
+        this.notify.error('Erro ao salvar usuário.');
+      }
+    });
   }
 }

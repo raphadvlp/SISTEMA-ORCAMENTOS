@@ -18,6 +18,7 @@ import { GruposDeUsuariosComponent } from './paginas/ModuloGruposUsuarios/grupos
 import { PermissoesComponent } from './paginas/ModuloGruposUsuarios/permissoes/permissoes.component';
 import { EmpresasComponent } from './paginas/ModuloCadastro/empresas/empresas.component';
 import { NovaempresaComponent } from './paginas/ModuloCadastro/novaempresa/novaempresa.component';
+import { NovaSenhaComponent } from './paginas/ModuloLogin/nova-senha/nova-senha.component';
 
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -43,6 +44,7 @@ export const routes: Routes = [
       { path: 'permissoes', component: PermissoesComponent },
       { path: 'empresas', component: EmpresasComponent },
       { path: 'novaempresa', component: NovaempresaComponent },
+      { path: 'nova-senha', component: NovaSenhaComponent },
     ],
     canActivate: [authGuard],
   },

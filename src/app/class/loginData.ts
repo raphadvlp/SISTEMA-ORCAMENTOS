@@ -3,5 +3,6 @@ export class loginData {
     token_type!: string;
     expiresAt!: number;
     refresh_token!: string;
+    mustChangePassword: boolean = false;
   }
   

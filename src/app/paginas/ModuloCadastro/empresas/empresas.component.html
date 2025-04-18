@@ -16,11 +16,14 @@
 </po-modal>
 
 <!-- Modal de edição -->
-<po-modal #editModal p-title="Editar Empresa">
+<po-modal #editModal p-title="Editar/Clonar Empresa">
   <po-dynamic-form
     [p-fields]="editFields"
     [p-value]="editData"
-    (p-submit)="saveEdit()"
-  ></po-dynamic-form>
-  <po-button p-label="Salvar" (p-click)="saveEdit()"></po-button>
+    (p-change)="onFormChange($event)">
+  </po-dynamic-form>
+  <po-modal-footer>
+    <po-button p-label="Salvar" type="primary" (p-click)="saveEdit()"></po-button>
+    <po-button p-label="Cancelar" type="default" (p-click)="editModalEl.close()"></po-button>
+  </po-modal-footer>
 </po-modal>

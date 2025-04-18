@@ -20,47 +20,49 @@
       {{ errorMessage }}
     </div>
   
-    <po-accordion *ngIf="!loading && !errorMessage">
-      <po-accordion-item 
-        *ngFor="let grupo of grupos" 
-        [p-label]="grupo.name + ' (' + grupo.usuarios.length + ')'">
+    <po-container>
+      <po-accordion *ngIf="!loading && !errorMessage">
+        <po-accordion-item class="accordion-item"
+          *ngFor="let grupo of grupos" 
+          [p-label]="grupo.name + ' (' + grupo.usuarios.length + ')'">
 
-        <div class="po-mb-2">
-            <po-button 
-              p-label="Editar Grupo" 
-              p-icon="po-icon-edit" 
+          <div class="po-mb-2">
+              <po-button 
+                p-label="Editar Grupo" 
+                p-icon="po-icon-edit" 
+                p-small
+                (p-click)="editarGrupo(grupo)">
+              </po-button>
+
+              <po-button 
+              p-label="Excluir Grupo" 
+              p-icon="po-icon-delete" 
+              type="danger"
               p-small
-              (p-click)="editarGrupo(grupo)">
+              [p-disabled]="excluindo"
+              (p-click)="confirmarExclusao(grupo)">
             </po-button>
-
-            <po-button 
-            p-label="Excluir Grupo" 
-            p-icon="po-icon-delete" 
-            type="danger"
-            p-small
-            [p-disabled]="excluindo"
-            (p-click)="confirmarExclusao(grupo)">
-          </po-button>
           </div>
-        
-        <div *ngIf="grupo.usuarios.length > 0; else semUsuarios" >
-          <po-table
-            [p-columns]="colunasTabelaUsuarios"
-            [p-items]="grupo.usuarios"
-            p-no-data="Nenhum usuário encontrado"
-            p-hide-columns-manager="true"
-            p-hide-table-search="false"
-            >
-          </po-table>
-        </div>
-        
-        <ng-template #semUsuarios>
-          <div class="po-p-3 po-text-center">
-            Nenhum usuário neste grupo
+          
+          <div class="table-accordion" *ngIf="grupo.usuarios.length > 0; else semUsuarios" >
+            <po-table
+              [p-columns]="colunasTabelaUsuarios"
+              [p-items]="grupo.usuarios"
+              p-no-data="Nenhum usuário encontrado"
+              p-hide-columns-manager="true"
+              p-hide-table-search="false"
+              >
+            </po-table>
           </div>
-        </ng-template>
-      </po-accordion-item>
-    </po-accordion>
+          
+          <ng-template #semUsuarios>
+            <div class="po-p-3 po-text-center">
+              Nenhum usuário neste grupo
+            </div>
+          </ng-template>
+        </po-accordion-item>
+      </po-accordion>
+    </po-container>
     <!-- <pre>{{ grupos | json }}</pre> -->
 
     <!-- Modal de Edição -->
@@ -69,7 +71,9 @@
       <div class="po-md-12">
         <po-input 
           [(ngModel)]="nomeEditado" 
-          p-label="Nome do Grupo">
+          p-label="Nome do Grupo"
+          p-disabled="true"
+          >
         </po-input>
         <po-lookup
         [(ngModel)]="novoUsuario.username" 

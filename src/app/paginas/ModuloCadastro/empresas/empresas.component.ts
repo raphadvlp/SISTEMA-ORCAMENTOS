@@ -4,6 +4,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ConfigService } from '@app/services/transformConfig.service';
 import { PoModalComponent, PoNotificationService, PoDynamicFormField, PoDynamicViewField, PoButtonModule, PoDividerModule, PoDynamicModule, PoModalModule, PoPageModule, PoTableModule } from '@po-ui/ng-components';
 import { PoPageDynamicTableComponent, PoPageDynamicTableField, PoPageDynamicTableCustomAction, PoPageDynamicTableActions, PoPageDynamicTableModule } from '@po-ui/ng-templates';
+import { Router } from '@angular/router';
 import { environment } from 'environments/environment';
 
 @Component({
@@ -32,14 +33,15 @@ title = 'Empresa';
   public itemEditData: any = {};
   public isEditingItem: boolean = false;
   public cadastroEmpresaData: any = {};
-  public editData: any = {};
+  public editData: any = {}; // Dados do formulário de edição/clonagem
   public descricao: string = '';
   public url: string = `${environment.url}/api/mock/empresas`;
 
   constructor(
     private configService: ConfigService,
     private http: HttpClient,
-    private notify: PoNotificationService
+    private notify: PoNotificationService,
+    private router: Router
   ) {
     configService.setConfig('empresa', 'id');
   }
@@ -93,6 +95,7 @@ title = 'Empresa';
   public tableActions: PoPageDynamicTableCustomAction[] = [
     { label: 'Detalhes', action: this.openDetailUser.bind(this) },
     { label: 'Editar', action: this.openEditModal.bind(this) },
+    { label: 'Clonar', action: this.openCloneModal.bind(this) }, // Nova ação de clonar
   ];
 
   public cadastroEmpresaFields: PoDynamicViewField[] = [
@@ -130,10 +133,17 @@ title = 'Empresa';
     this.editModalEl.open();
   }
 
+  public openCloneModal(conta: any) {
+    const clonedData = { ...conta };
+    delete clonedData.id; // Remove o ID para criar um novo registro
+
+    // Redireciona para a página de criação com os dados clonados como parâmetros
+    this.router.navigate(['/novaempresa'], { queryParams: clonedData });
+  }
+
   public saveEdit() {
-    const url = `${this.url}`; // URL sem o ID
+    const url = this.isEditingItem ? `${this.url}` : `${this.url}/create`; // Define a URL com base na ação
     const payload = {
-      id: this.editData.id, // ID no payload
       codigo: this.editData.codigo,
       razao_social: this.editData.razao_social,
       nome_fantasia: this.editData.nome_fantasia,
@@ -143,24 +153,27 @@ title = 'Empresa';
     console.log('URL da requisição:', url);
     console.log('Dados enviados:', payload);
 
-    this.http.put(url, payload).subscribe({
+    const request = this.isEditingItem
+      ? this.http.put(url, { ...payload, id: this.editData.id }) // Atualiza o registro existente
+      : this.http.post(url, payload); // Cria um novo registro
+
+    request.subscribe({
       next: () => {
-        this.notify.success('Empresa atualizada com sucesso!');
+        const message = this.isEditingItem
+          ? 'Empresa atualizada com sucesso!'
+          : 'Empresa criada com sucesso!';
+        this.notify.success(message);
         this.editModalEl.close();
         window.location.reload(); // Recarrega a página
       },
       error: (error) => {
-        console.error('Erro ao atualizar Empresa:', error);
-        if (error.status === 404) {
-          this.notify.error(
-            'Recurso não encontrado. Verifique o ID ou o endpoint.'
-          );
-        } else {
-          this.notify.error(
-            `Erro ao atualizar Empresa: ${error.message}`
-          );
-        }
+        console.error('Erro ao salvar Empresa:', error);
+        this.notify.error(`Erro ao salvar Empresa: ${error.message}`);
       },
     });
+  }
+
+  onFormChange(changes: any) {
+    this.editData = { ...this.editData, ...changes }; // Atualiza os dados com as alterações
   }
 }

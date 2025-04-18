@@ -123,13 +123,13 @@ export class OrcamentosComponent implements OnInit {
       filter: true,
       allowColumnsManager: true,
     },
-    {
-      property: 'empresa',
-      label: 'Empresa',
-      type: 'string',
-      filter: true,
-      allowColumnsManager: true,
-    },
+    // {
+    //   property: 'empresa',
+    //   label: 'Empresa',
+    //   type: 'string',
+    //   filter: true,
+    //   allowColumnsManager: true,
+    // },
     {
       property: 'descricao_orcamento',
       label: 'Descrição',
@@ -191,6 +191,24 @@ export class OrcamentosComponent implements OnInit {
     // Campos do formulário de edição de itens
     public itemFields: PoDynamicFormField[] = [
       { property: 'item', label: 'Item', required: true, disabled: true },
+      {
+        property: 'empresa',
+        label: 'Empresa',
+        type: 'string',
+        placeholder: 'Selecione uma Empresa',
+        required: true,
+        clean: true,
+        maxLength: 3,
+        searchService: this.lookupServiceEmpresas,
+        fieldLabel: 'codigo', // Exibe apenas o código
+        fieldValue: 'codigo', // Valor retornado ao selecionar
+        columns: [ // Colunas exibidas no lookup
+          { property: 'codigo', label: 'Código' },
+          { property: 'razao_social', label: 'Razão Social' },
+          { property: 'nome_fantasia', label: 'Nome Fanasia' },
+        ],
+        noAutocomplete: true,
+      },
       // { property: 'orcamento', label: 'Orçamento', required: true },
       { property: 'conta', label: 'Conta', required: true ,
         searchService: this.lookupServiceContaOrcamentaria,
@@ -217,7 +235,7 @@ export class OrcamentosComponent implements OnInit {
   // Detalhes do orçamento
   public orcamentoFields: PoDynamicViewField[] = [
     { property: 'codigo_orcamento', label: 'Código', gridColumns: 6 },
-    { property: 'empresa', label: 'Empresa', gridColumns: 6 },
+    // { property: 'empresa', label: 'Empresa', gridColumns: 6 },
     {
       property: 'descricao_orcamento',
       label: 'Descrição',
@@ -238,25 +256,25 @@ export class OrcamentosComponent implements OnInit {
   // Campos para edição do orçamento
   public editFields: PoDynamicFormField[] = [
     { property: 'codigo_orcamento', label: 'Código', required: true, disabled: true },
-    {
-      property: 'empresa',
-      label: 'Empresa',
-      type: 'string',
-      placeholder: 'Selecione uma Empresa',
-      required: true,
-      gridColumns: 4,
-      clean: true,
-      maxLength: 3,
-      searchService: this.lookupServiceEmpresas,
-      fieldLabel: 'codigo', // Exibe apenas o código
-      fieldValue: 'codigo', // Valor retornado ao selecionar
-      columns: [ // Colunas exibidas no lookup
-        { property: 'codigo', label: 'Código' },
-        { property: 'razao_social', label: 'Razão Social' },
-        { property: 'nome_fantasia', label: 'Nome Fanasia' },
-      ],
-      noAutocomplete: true,
-    },
+    // {
+    //   property: 'empresa',
+    //   label: 'Empresa',
+    //   type: 'string',
+    //   placeholder: 'Selecione uma Empresa',
+    //   required: true,
+    //   gridColumns: 4,
+    //   clean: true,
+    //   maxLength: 3,
+    //   searchService: this.lookupServiceEmpresas,
+    //   fieldLabel: 'codigo', // Exibe apenas o código
+    //   fieldValue: 'codigo', // Valor retornado ao selecionar
+    //   columns: [ // Colunas exibidas no lookup
+    //     { property: 'codigo', label: 'Código' },
+    //     { property: 'razao_social', label: 'Razão Social' },
+    //     { property: 'nome_fantasia', label: 'Nome Fanasia' },
+    //   ],
+    //   noAutocomplete: true,
+    // },
     { property: 'descricao_orcamento', label: 'Descrição', required: true },
     {
       property: 'periodo',
@@ -302,6 +320,7 @@ export class OrcamentosComponent implements OnInit {
   public itemColumns: PoTableColumn[] = [
     
     { property: 'item', label: 'Item', type: 'string' },
+    { property: 'empresa', label: 'Empresa', type: 'string' },
     // { property: 'orcamento', label: 'Orçamento', type: 'string' },
     { property: 'conta', label: 'Conta', type: 'string' },
     { property: 'cc', label: 'CC', type: 'string' },

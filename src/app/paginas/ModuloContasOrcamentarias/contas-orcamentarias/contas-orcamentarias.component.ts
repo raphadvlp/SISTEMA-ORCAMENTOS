@@ -101,12 +101,12 @@ export class ContasOrcamentariasComponent {
     {
       label: 'Detalhes',
       action: this.openDetailUser.bind(this),
-      icon: 'an an-user',
+      // icon: 'an an-user',
     },
     {
       label: 'Editar',
       action: this.openEditUser.bind(this),
-      icon: 'po-icon-edit',
+      // icon: 'po-icon-edit',
     },
   ];
 

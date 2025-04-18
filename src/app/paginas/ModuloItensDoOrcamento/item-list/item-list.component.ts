@@ -37,6 +37,7 @@ export class ItemListComponent implements OnInit {
 
   lookupServiceContaOrcamentaria = `${environment.url}/api/mock/contaorcamentaria`;
   lookupServiceCentroDeCusto = `${environment.url}/api/mock/centrodecusto`;
+  lookupServiceEmpresas = `${environment.url}/api/mock/empresas`;
 
     private notify = inject(PoNotificationService);
   
@@ -75,6 +76,25 @@ export class ItemListComponent implements OnInit {
       // visible: false, // Oculta o campo no formulário
       noAutocomplete: true,
     },
+    {
+      property: 'empresa',
+      label: 'Empresa',
+      type: 'string',
+      placeholder: 'Selecione uma Empresa',
+      required: true,
+      gridColumns: 2,
+      clean: true,
+      maxLength: 3,
+      searchService: this.lookupServiceEmpresas,
+      fieldLabel: 'codigo', // Exibe apenas o código
+      fieldValue: 'codigo', // Valor retornado ao selecionar
+      columns: [ // Colunas exibidas no lookup
+        { property: 'codigo', label: 'Código' },
+        { property: 'razao_social', label: 'Razão Social' },
+        { property: 'nome_fantasia', label: 'Nome Fanasia' },
+      ],
+      noAutocomplete: true,
+    },
     // {
     //   property: 'orcamento',
     //   label: 'Orçamento',
@@ -91,7 +111,7 @@ export class ItemListComponent implements OnInit {
       label: 'Conta Orçamentária',
       type: 'string',
       required: true,
-      gridColumns: 4,
+      gridColumns: 2,
       disabled: false,
       searchService: this.lookupServiceContaOrcamentaria,
       fieldLabel: 'nome_contaorcamentaria', // Exibe apenas o código
@@ -150,6 +170,7 @@ export class ItemListComponent implements OnInit {
   // Colunas da tabela
   columns = [
     { property: 'item', label: 'Item' },
+    { property: 'empresa', label: 'Empresa' },
     // { property: 'orcamento', label: 'Orçamento' },
     { property: 'conta', label: 'Conta Orçamentária' },
     { property: 'cc', label: 'Centro de Custo' },
@@ -263,6 +284,7 @@ export class ItemListComponent implements OnInit {
   
     // Limpa o formulário
     this.formValues.orcamento = '';
+    this.formValues.empresa = '';
     this.formValues.conta = '';
     this.formValues.cc = '';
     this.formValues.dataP = '';

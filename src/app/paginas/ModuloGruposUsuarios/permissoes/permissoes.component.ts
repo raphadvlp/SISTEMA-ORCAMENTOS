@@ -30,6 +30,11 @@ export class PermissoesComponent {
     { property: 'excluir', label: 'Excluir', type: 'boolean' }
   ];
 
+  colunasGrupos: PoLookupColumn[] = [
+    { property: 'id', label: 'Código' },
+    { property: 'name', label: 'Nome' },
+]
+
   constructor(
     private configService: ConfigService,
     private http: HttpClient,

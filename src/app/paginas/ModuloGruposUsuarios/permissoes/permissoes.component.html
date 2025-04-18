@@ -18,6 +18,7 @@ p-title="Gerenciar Permissões de Grupos"
           [p-placeholder]="'Selecione um grupo'"
           [p-field-label]="'name'"
           [p-field-value]="'id'"
+          [p-columns]="colunasGrupos"
           [p-filter-service]="urlGrupos"
           [p-filter-params]="{ dataPath: 'data' }"
           (p-change)="onGrupoSelecionado($event)">
@@ -34,34 +35,53 @@ p-title="Gerenciar Permissões de Grupos"
             <po-accordion-item *ngFor="let menu of permissoes" [p-label]="menu.menu">
               <po-accordion>
                 <po-accordion-item *ngFor="let submenu of menu.submenus" [p-label]="submenu.submenu">
+                  <!-- <po-switch
+                    name="geral"
+                    p-label="Geral"
+                    [(ngModel)]="submenu.menu"
+                    p-label-off="Não"
+                    p-label-on="Sim"
+                    ></po-switch> -->
                   <div class="po-row">
                     <div class="po-md-3">
-                      <po-checkbox
+                      <po-switch
                         name="ler"
                         p-label="Ler"
-                        [(ngModel)]="submenu.ler">
-                      </po-checkbox>
+                        [(ngModel)]="submenu.ler"
+                        p-label-off="Não"
+                        p-label-on="Sim"
+                        >
+                      </po-switch>
                     </div>
                     <div class="po-md-3">
-                      <po-checkbox
+                      <po-switch
                         name="criar"
                         p-label="Criar"
-                        [(ngModel)]="submenu.criar">
-                      </po-checkbox>
+                        [(ngModel)]="submenu.criar"
+                        p-label-off="Não"
+                        p-label-on="Sim"
+                        >
+                      </po-switch>
                     </div>
                     <div class="po-md-3">
-                      <po-checkbox
+                      <po-switch
                         name="editar"
                         p-label="Editar"
-                        [(ngModel)]="submenu.editar">
-                      </po-checkbox>
+                        [(ngModel)]="submenu.editar"
+                        p-label-off="Não"
+                        p-label-on="Sim"
+                        >
+                      </po-switch>
                     </div>
                     <div class="po-md-3">
-                      <po-checkbox
+                      <po-switch
                         name="excluir"
                         p-label="Excluir"
-                        [(ngModel)]="submenu.excluir">
-                      </po-checkbox>
+                        [(ngModel)]="submenu.excluir"
+                        p-label-off="Não"
+                        p-label-on="Sim"
+                        >
+                      </po-switch>
                     </div>
                   </div>
                 </po-accordion-item>

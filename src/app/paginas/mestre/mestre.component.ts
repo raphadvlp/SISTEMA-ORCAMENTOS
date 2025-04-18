@@ -30,6 +30,7 @@ export class MestreComponent {
     },
     {
       label: 'Cadastro',
+      
       shortLabel: 'cadastro',
       link: '/cadastro',
       action: this.clickItemMenu.bind(this),

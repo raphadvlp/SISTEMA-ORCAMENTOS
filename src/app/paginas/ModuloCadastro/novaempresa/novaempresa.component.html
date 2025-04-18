@@ -8,14 +8,15 @@
 }">
   <po-dynamic-form
     [p-fields]="fields"
-    [p-value]="formNovaEmpresa"
-    
-  ></po-dynamic-form>
+    [p-value]="formData"
+    (p-change)="onFormChange($event)">
+  </po-dynamic-form>
   <div class="po-row">
     <po-button
       class="po-md-3"
       p-label="Cadastrar"
       (p-click)="confirmarForm(formNovaEmpresa)"
     ></po-button>
+    <po-button p-label="Salvar" type="primary" (p-click)="save(formNovaEmpresa)"></po-button>
   </div>
 </po-page-default>

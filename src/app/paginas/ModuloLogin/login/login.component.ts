@@ -49,20 +49,25 @@ export class LoginComponent {
         localStorage.setItem('expiresAt', (loginNow + this.loginData.expiresAt * 1000).toString());
         localStorage.setItem('username', loginPage.login);
 
-        this.isHiddenLoading = true;
-        this.router.navigate(['/home']);
+        // Verifica se o usuário precisa redefinir a senha
+        if (this.loginData.mustChangePassword) {
+          this.router.navigate(['/nova-senha']); // Redireciona para a página de redefinição de senha
+        } else {
+          this.isHiddenLoading = true;
+          this.router.navigate(['/home']);
+        }
       },
       error: (err) => {
         console.log('error', err);
 
         let msgerro: string;
 
-        err.erro.code === 401 ? (msgerro = err.error.message) : (msgerro = 'Login ou senha inválidos!');
-        this.notify.error({duration: 2000, message: msgerro});
+        err.error.code === 401 ? (msgerro = err.error.message) : (msgerro = 'Login ou senha inválidos!');
+        this.notify.error({ duration: 2000, message: msgerro });
         this.isHiddenLoading = true;
       },
       complete: () => {},
-    })
+    });
   }
 
 }

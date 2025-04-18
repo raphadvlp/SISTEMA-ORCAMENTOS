@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Empresas } from '@app/class/empresas';
 import { PoDynamicFormField, PoModule, PoNotificationService } from '@po-ui/ng-components';
 import { environment } from 'environments/environment';
@@ -12,13 +12,22 @@ import { environment } from 'environments/environment';
   styleUrl: './novaempresa.component.css'
 })
 export class NovaempresaComponent {
-private http = inject(HttpClient);
+  private http = inject(HttpClient);
   private route = inject(Router);
   private url: string = environment.url;
   private notify = inject(PoNotificationService);
+  public formData: any = {}; // Adiciona a propriedade formData
+
+  constructor(private activatedRoute: ActivatedRoute) {
+    // Recupera os parâmetros da URL
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.formData = { ...params }; // Preenche os dados do formulário com os parâmetros
+    });
+  }
 
   public isEditing: boolean = false; // Adiciona a propriedade isEditing
   public formNovaEmpresa: Empresas = new Empresas();
+  
 
   public fields: PoDynamicFormField[] = [
     {
@@ -77,7 +86,7 @@ private http = inject(HttpClient);
   ];
 
   public confirmarForm(form: Empresas) {
-    // Adiciona zeros à esquerda se o código tiver menos de 3 dígitos
+    // Adiciona zeros à esquerda se o código tiver menos de 2 dígitos
     form.codigo = form.codigo.toString().padStart(2, '0');
 
     // Converte o valor do campo descricao_orcamento para uppercase
@@ -98,6 +107,33 @@ private http = inject(HttpClient);
           duration: 2000,
           message: `Erro ao cadastrar Empresa: ${error.message}`,
         });
+      },
+    });
+  }
+
+  onFormChange(changes: any) {
+    // Atualiza os dados do formulário com as alterações feitas
+    this.formData = { ...this.formData, ...changes };
+  }
+
+  public save(form: Empresas) {
+    // Adiciona zeros à esquerda se o código tiver menos de 2 dígitos
+    form.codigo = form.codigo.toString().padStart(2, '0');
+    const payload = {
+      codigo: this.formData.codigo,
+      razao_social: this.formData.razao_social,
+      nome_fantasia: this.formData.nome_fantasia,
+      cnpj: this.formData.cnpj,
+    };
+
+    this.http.post(`${environment.url}/api/mock/empresas`, payload).subscribe({
+      next: () => {
+        this.notify.success('Empresa criada com sucesso!');
+        this.route.navigate(['/empresas']); // Redireciona para a lista de empresas
+      },
+      error: (error) => {
+        console.error('Erro ao criar empresa:', error);
+        this.notify.error('Erro ao criar empresa.');
       },
     });
   }
